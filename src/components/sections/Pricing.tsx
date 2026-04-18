@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, ShieldCheck, Zap, Globe } from 'lucide-react';
+import Link from 'next/link';
 
 const PRICING = [
   {
@@ -129,13 +130,15 @@ const Pricing = () => {
                 ))}
               </div>
 
-              <button className={`w-full py-5 rounded-[1.5rem] font-black uppercase text-xs tracking-[0.2em] transition-all duration-300 ${
+              <Link 
+                href="/contact"
+                className={`w-full py-5 rounded-[1.5rem] font-black uppercase text-xs tracking-[0.2em] transition-all duration-300 flex items-center justify-center ${
                 plan.highlight 
                   ? 'bg-accent text-primary-dark hover:bg-white hover:scale-105 shadow-xl shadow-accent/20' 
                   : 'glass border-white/10 hover:bg-white/10 hover:border-white/30'
               }`}>
                 {plan.price === 'Custom' ? 'Initiate Inquiry' : 'Secure Now'}
-              </button>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -150,9 +153,12 @@ const Pricing = () => {
               <h5 className="text-white font-bold mb-1">Need a specialized setup?</h5>
               <p className="text-sm text-white/40">We offer custom configurations for high-security facilities.</p>
            </div>
-           <button className="text-accent font-black uppercase tracking-widest text-xs py-3 px-8 rounded-full border border-accent/30 hover:bg-accent/10 transition-colors">
+           <Link 
+             href="/contact"
+             className="text-accent font-black uppercase tracking-widest text-xs py-3 px-8 rounded-full border border-accent/30 hover:bg-accent/10 transition-colors"
+           >
               Request Audit
-           </button>
+           </Link>
         </motion.div>
         
         <motion.p

@@ -19,26 +19,26 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-4' : 'py-8'}`}>
-      <div className="container mx-auto px-6">
-        <div className={`flex items-center justify-between px-8 py-4 rounded-full transition-all duration-500 ${isScrolled ? 'bg-primary-dark shadow-2xl shadow-accent/20 border-accent/30' : 'glass bg-opacity-20'}`}>
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="relative w-10 h-10 transition-transform duration-300 group-hover:scale-110">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-1' : 'py-2'}`}>
+      <div className="container mx-auto px-4">
+        <div className={`flex items-center justify-between px-4 py-1.5 rounded-full transition-all duration-500 ${isScrolled ? 'bg-primary-dark shadow-2xl shadow-accent/20 border-accent/20' : 'glass bg-opacity-20'}`}>
+          <Link href="/" className="flex items-center space-x-2 group">
+            <div className="relative w-8 h-8 transition-transform duration-300 group-hover:scale-110">
               <Image src="/logo.png" alt="Secure Watch 24 Logo" fill className="object-contain" />
             </div>
-            <span className="text-xl font-black tracking-tight text-white hidden sm:block">
+            <span className="text-lg font-black tracking-tight text-white hidden sm:block">
               SECURE<span className="text-accent underline decoration-accent/30 underline-offset-4">WATCH 24</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-10">
+          <div className="hidden md:flex items-center space-x-8">
             <NavLink href="#services">Services</NavLink>
             <NavLink href="#industries">Industries</NavLink>
             <NavLink href="#pricing">Pricing</NavLink>
             <Link 
-              href="#contact" 
-              className="px-8 py-3 bg-accent text-primary-dark font-black rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl shadow-accent/20"
+              href="/contact" 
+              className="px-6 py-2 bg-accent text-primary-dark font-black rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl shadow-accent/20 text-sm"
             >
               Get Protected
             </Link>
@@ -64,7 +64,7 @@ const Navbar = () => {
             <NavLink href="#industries" onClick={() => setIsMobileMenuOpen(false)}>Industries</NavLink>
             <NavLink href="#pricing" onClick={() => setIsMobileMenuOpen(false)}>Pricing</NavLink>
             <Link 
-              href="#contact" 
+              href="/contact" 
               className="px-6 py-4 bg-accent text-primary-dark font-black rounded-full text-center text-lg active:scale-95 transition-transform"
               onClick={() => setIsMobileMenuOpen(false)}
             >
@@ -81,7 +81,7 @@ const NavLink = ({ href, children, className = '', onClick }: { href: string, ch
   <Link 
     href={href} 
     onClick={onClick}
-    className={`text-sm font-bold text-white/70 hover:text-accent transition-all duration-300 relative group ${className}`}
+    className={`text-xs font-bold text-white/70 hover:text-accent transition-all duration-300 relative group ${className}`}
   >
     {children}
     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full"></span>
