@@ -2,51 +2,73 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Check, ShieldCheck, Zap, Globe } from 'lucide-react';
+import { Check, ShieldCheck, Zap, Globe, Shield } from 'lucide-react';
 import Link from 'next/link';
 
 const PRICING = [
   {
-    title: '1–4 Cameras',
-    price: '300',
+    title: 'Basic Plan',
+    price: '400',
     icon: <Zap size={24} />,
-    description: 'Ideal starting plan for small businesses and residential properties.',
+    description: 'Ideal for small spaces with basic monitoring needs.',
     features: [
-      '1–4 CCTV Channels',
-      '24/7 Live Human Monitoring',
-      'Instant Mobile Notifications',
-      'Weekly Status Reports',
-      'Remote App Access'
+      'Up to 10 Cameras',
+      '24/7 Continuous Live Monitoring',
+      'Real-Time Instant Alerts',
+      'Hourly Activity Reporting',
+      'Suspicious Activity Notifications',
+      'Professional Monitoring Team',
+      'Secure Data Handling',
+      'Rapid Response & Escalation'
     ],
     highlight: false
   },
   {
-    title: '5–10 Cameras',
-    price: '500',
+    title: 'Standard Plan',
+    price: '600',
     icon: <ShieldCheck size={24} />,
-    description: 'Enhanced surveillance for medium-sized facilities and offices.',
+    description: 'Perfect for homes and medium-sized offices.',
     features: [
-      '5–10 CCTV Channels',
-      'Emergency Contact Escalation',
-      '24/7 Dedicated Surveillance',
-      'Daily Performance Reports',
-      'Multi-user Access Control',
-      'On-site Guard Coordination'
+      'Up to 20 Cameras',
+      '24/7 Continuous Live Monitoring',
+      'Real-Time Instant Alerts',
+      'Hourly Activity Reporting',
+      'Suspicious Activity Notifications',
+      'Dedicated Monitoring Team',
+      'Secure Data Handling',
+      'Rapid Response & Escalation'
     ],
     highlight: true
   },
   {
-    title: 'Custom Packages',
-    price: 'Custom',
+    title: 'Premium Plan',
+    price: 'Contact',
     icon: <Globe size={24} />,
-    description: 'Available based on your specific requirements and scope.',
+    description: 'Tailored for businesses and large-scale areas.',
     features: [
-      'Unlimited CCTV Channels',
-      'Multi-site Centralization',
-      'AI Incident Detection',
-      'Custom API & Dashboards',
-      'Dedicated Account Manager',
-      'Rapid Response Protocol'
+      'Flexible Camera Coverage',
+      '24/7 Continuous Live Monitoring',
+      'Real-Time Instant Alerts',
+      'Hourly Reporting',
+      'Dedicated Monitoring Team',
+      'Secure Data Handling',
+      'Rapid Incident Response',
+      'Advanced Monitoring Features'
+    ],
+    highlight: false
+  },
+  {
+    title: 'Custom Plan',
+    price: 'Custom',
+    icon: <Shield size={24} />,
+    description: 'Flexible solutions tailored to your business requirements.',
+    features: [
+      'Flexible Camera Coverage',
+      'Custom Reporting',
+      'Priority Response Handling',
+      'Scalable Monitoring Solutions',
+      'Custom Pricing Based on Scope',
+      'Dedicated Monitoring Team'
     ],
     highlight: false
   }
@@ -86,7 +108,7 @@ const Pricing = () => {
            </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {PRICING.map((plan, index) => (
             <motion.div
               key={index}
@@ -94,10 +116,10 @@ const Pricing = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`relative p-10 rounded-[3rem] flex flex-col group transition-all duration-500 card-hover ${
+              className={`relative p-8 rounded-[3rem] flex flex-col group transition-all duration-500 card-hover ${
                 plan.highlight 
-                  ? 'bg-gradient-to-br from-accent/10 to-transparent border-2 border-accent shadow-2xl shadow-accent/20' 
-                  : 'glass border-white/5 hover:border-white/20'
+                   ? 'bg-gradient-to-br from-accent/10 to-transparent border-2 border-accent shadow-2xl shadow-accent/20' 
+                   : 'glass border-white/5 hover:border-white/20'
               }`}
             >
               {plan.highlight && (
@@ -114,9 +136,9 @@ const Pricing = () => {
               </div>
               
               <div className="flex items-baseline mb-4">
-                {plan.price !== 'Custom' && <span className="text-2xl font-black text-accent mr-1">$</span>}
-                <span className="text-6xl font-black text-white tracking-tighter">{plan.price}</span>
-                {plan.price !== 'Custom' && <span className="text-white/30 text-sm ml-2 font-bold uppercase tracking-widest">/mo</span>}
+                {plan.price !== 'Custom' && plan.price !== 'Contact' && <span className="text-2xl font-black text-accent mr-1">$</span>}
+                <span className={`${plan.price === 'Contact' ? 'text-4xl' : 'text-6xl'} font-black text-white tracking-tighter`}>{plan.price}</span>
+                {plan.price !== 'Custom' && plan.price !== 'Contact' && <span className="text-white/30 text-sm ml-2 font-bold uppercase tracking-widest">/mo</span>}
               </div>
               
               <p className="text-white/40 text-sm mb-10 min-h-[40px] leading-relaxed italic">{plan.description}</p>
@@ -137,7 +159,7 @@ const Pricing = () => {
                   ? 'bg-accent text-primary-dark hover:bg-white hover:scale-105 shadow-xl shadow-accent/20' 
                   : 'glass border-white/10 hover:bg-white/10 hover:border-white/30'
               }`}>
-                {plan.price === 'Custom' ? 'Initiate Inquiry' : 'Secure Now'}
+                {plan.price === 'Custom' || plan.price === 'Contact' ? 'Initiate Inquiry' : 'Secure Now'}
               </Link>
             </motion.div>
           ))}

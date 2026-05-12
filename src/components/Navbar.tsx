@@ -32,10 +32,12 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
+            <NavLink href="#about">About Us</NavLink>
             <NavLink href="#services">Services</NavLink>
             <NavLink href="#industries">Industries</NavLink>
             <NavLink href="#pricing">Pricing</NavLink>
+            <NavLink href="#faq">FAQ</NavLink>
             <Link 
               href="/contact" 
               className="px-6 py-2 bg-accent text-primary-dark font-black rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl shadow-accent/20 text-sm"
@@ -60,9 +62,11 @@ const Navbar = () => {
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             className="md:hidden absolute top-full left-6 right-6 mt-4 glass rounded-[2.5rem] p-8 flex flex-col space-y-6 shadow-2xl border-accent/20"
           >
+            <NavLink href="#about" onClick={() => setIsMobileMenuOpen(false)}>About Us</NavLink>
             <NavLink href="#services" onClick={() => setIsMobileMenuOpen(false)}>Services</NavLink>
             <NavLink href="#industries" onClick={() => setIsMobileMenuOpen(false)}>Industries</NavLink>
             <NavLink href="#pricing" onClick={() => setIsMobileMenuOpen(false)}>Pricing</NavLink>
+            <NavLink href="#faq" onClick={() => setIsMobileMenuOpen(false)}>FAQ</NavLink>
             <Link 
               href="/contact" 
               className="px-6 py-4 bg-accent text-primary-dark font-black rounded-full text-center text-lg active:scale-95 transition-transform"

@@ -87,36 +87,55 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-5xl md:text-7xl font-black mb-2 leading-[1.1] tracking-tighter"
             >
-              Securing Your<br />
-              <span className="text-gradient">World 24 Hours a Day</span>
+              Advanced CCTV Monitoring<br />
+              <span className="text-gradient">& Real-Time Protection</span>
             </motion.h1>
+
+            <motion.h3
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-2xl md:text-3xl font-bold text-accent mb-4 tracking-tight"
+            >
+              24/7 professional CCTV monitoring and smart surveillance solutions.
+            </motion.h3>
 
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg md:text-xl text-white/80 max-w-2xl mb-4 leading-relaxed"
+              className="text-lg md:text-xl text-white/80 max-w-2xl mb-8 leading-relaxed"
             >
-              Secure Watch is a professional security monitoring company specializing in 24/7 CCTV surveillance and remote security management. We deliver reliable, real-time monitoring solutions designed to protect properties, assets, and people with maximum efficiency and vigilance.
+              Secure Watch 24 Services provides reliable remote monitoring, instant alerts, and advanced surveillance solutions designed to protect properties, people, and businesses around the clock.
             </motion.p>
 
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8 justify-center lg:justify-start"
+              className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center lg:justify-start"
             >
               <Link 
                 href="/contact"
                 className="btn-primary flex items-center group w-full sm:w-auto justify-center"
               >
-                Get Protected Today
+                Get Started
                 <ShieldCheck className="ml-3 group-hover:rotate-12 transition-transform" size={24} />
               </Link>
-              <button className="btn-outline flex items-center group w-full sm:w-auto justify-center">
-                Explore Services
+              <Link 
+                href="/contact"
+                className="btn-outline flex items-center group w-full sm:w-auto justify-center"
+              >
+                Contact Us
                 <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" size={24} />
-              </button>
+              </Link>
+              <Link 
+                href="/contact"
+                className="btn-outline flex items-center group w-full sm:w-auto justify-center text-accent border-accent/20"
+              >
+                Request a Demo
+                <Zap className="ml-3 group-hover:scale-110 transition-transform" size={24} />
+              </Link>
             </motion.div>
 
             {/* Stats Preview */}

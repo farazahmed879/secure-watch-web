@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Shield, ExternalLink } from 'lucide-react';
+import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Shield, ExternalLink, Globe, Clock } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -22,49 +22,64 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-white/40 text-sm leading-relaxed max-w-xs font-semibold italic">
-              Our mission is to provide dependable and proactive security monitoring services that ensure our clients feel safe and secure at all times. Professional surveillance with a global reach.
+              Secure Watch 24 Services is committed to delivering reliable security monitoring solutions that help businesses and individuals stay protected 24/7.
             </p>
+            <div className="space-y-2">
+               <p className="text-xs font-black text-accent uppercase tracking-widest">Always Watching. Always Protecting.</p>
+               <p className="text-xs font-black text-white/30 uppercase tracking-widest">Your Security, Our Priority.</p>
+            </div>
             <div className="flex space-x-5">
-              <SocialIcon icon={<Facebook size={18} />} />
-              <SocialIcon icon={<Twitter size={18} />} />
-              <SocialIcon icon={<Linkedin size={18} />} />
+              <SocialIcon icon={<Facebook size={18} />} href="#" />
+              <SocialIcon icon={<Twitter size={18} />} href="#" />
+              <SocialIcon icon={<Linkedin size={18} />} href="https://linkedin.com/in/muzaffarali1493" />
             </div>
           </div>
 
           <div>
-            <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">Governance</h4>
+            <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">Quick Links</h4>
             <ul className="space-y-5 text-sm font-bold text-white/50">
-              <li><FooterLink href="#services">Services Portfolio</FooterLink></li>
-              <li><FooterLink href="#industries">Global Operations</FooterLink></li>
-              <li><FooterLink href="#pricing">Investment Plans</FooterLink></li>
-              <li><FooterLink href="#">Privacy & Legal</FooterLink></li>
+              <li><FooterLink href="#about">About Us</FooterLink></li>
+              <li><FooterLink href="#services">Services</FooterLink></li>
+              <li><FooterLink href="#industries">Industries</FooterLink></li>
+              <li><FooterLink href="#pricing">Pricing Plans</FooterLink></li>
+              <li><FooterLink href="#faq">FAQs</FooterLink></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">Operations</h4>
-            <ul className="space-y-5 text-sm font-bold text-white/50">
-              <li>Live Tactical Monitoring</li>
-              <li>Remote Asset Defense</li>
-              <li>Advanced Incident Analytics</li>
-              <li>Emergency Response Grid</li>
+            <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">Contact Details</h4>
+            <ul className="space-y-6 text-sm font-bold text-white/50">
+              <li className="flex items-start space-x-4">
+                 <Phone size={20} className="text-accent shrink-0" />
+                 <div className="flex flex-col">
+                    <span>+92 309 8344704</span>
+                    <span>+92 344 2553858</span>
+                 </div>
+              </li>
+              <li className="flex items-start space-x-4">
+                 <Mail size={20} className="text-accent shrink-0" />
+                 <div className="flex flex-col">
+                    <a href="mailto:contact@sw24services.com" className="hover:text-accent">contact@sw24services.com</a>
+                    <a href="mailto:securewatch24services@gmail.com" className="hover:text-accent text-[10px]">securewatch24services@gmail.com</a>
+                 </div>
+              </li>
+              <li className="flex items-start space-x-4">
+                 <Globe size={20} className="text-accent shrink-0" />
+                 <a href="http://www.sw24services.com" className="hover:text-accent">www.sw24services.com</a>
+              </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">HQ & Partner Access</h4>
+            <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">Headquarters</h4>
             <div className="space-y-6">
               <div className="flex items-start space-x-4 text-sm text-white/50 group">
-                <Shield size={20} className="text-accent shrink-0 group-hover:scale-110 transition-transform" />
-                <span className="font-bold">Alpha Crime Control HQ<br /><span className="text-[10px] text-white/30 uppercase tracking-widest">Houston, TX Operations</span></span>
-              </div>
-              <div className="flex items-center space-x-4 text-sm text-white/50 group">
                 <MapPin size={20} className="text-accent shrink-0 group-hover:scale-110 transition-transform" />
-                <span className="font-bold hover:text-white transition-colors cursor-pointer">7447 Harwin Drive, Houston, TX</span>
+                <span className="font-bold">Office No D-35, 2nd Floor,<br />Shahrah-e-Faisal,<br />Karachi, Pakistan</span>
               </div>
               <div className="flex items-center space-x-4 text-sm text-white/50 group">
-                <Phone size={20} className="text-accent shrink-0 group-hover:scale-110 transition-transform" />
-                <span className="font-black text-white">+1 (281) 702-9418</span>
+                <Clock size={20} className="text-accent shrink-0 group-hover:scale-110 transition-transform" />
+                <span className="font-black text-white">24/7 — Monday to Sunday</span>
               </div>
             </div>
           </div>
@@ -95,8 +110,8 @@ const FooterLink = ({ href, children }: { href: string, children: React.ReactNod
   </a>
 );
 
-const SocialIcon = ({ icon }: { icon: React.ReactNode }) => (
-  <a href="#" className="w-12 h-12 rounded-2xl glass flex items-center justify-center text-white/50 hover:text-accent hover:border-accent shadow-xl hover:shadow-accent/20 transition-all duration-500 hover:-translate-y-1">
+const SocialIcon = ({ icon, href }: { icon: React.ReactNode, href: string }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl glass flex items-center justify-center text-white/50 hover:text-accent hover:border-accent shadow-xl hover:shadow-accent/20 transition-all duration-500 hover:-translate-y-1">
     {icon}
   </a>
 );

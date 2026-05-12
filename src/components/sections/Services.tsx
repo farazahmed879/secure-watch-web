@@ -6,34 +6,34 @@ import { Monitor, FileSearch, Users, Clock, Shield, Globe, Zap } from 'lucide-re
 
 const SERVICES = [
   {
-    icon: <Users size={32} />,
-    title: 'Professional Monitoring Team',
-    description: 'Our expert security personnel are trained for high-vigilance monitoring, ensuring professional-grade security for your assets.'
-  },
-  {
     icon: <Clock size={32} />,
-    title: 'Rapid Response Time',
-    description: 'Instant detection and immediate action to mitigate security risks the moment they are identified by our systems.'
-  },
-  {
-    icon: <FileSearch size={32} />,
-    title: 'Accurate Incident Reporting',
-    description: 'Meticulous and detailed reports of every detected security event, providing full transparency and accountability.'
+    title: '24/7 Live Monitoring',
+    description: 'Our trained operators monitor live camera feeds and instantly respond to suspicious activities.'
   },
   {
     icon: <Monitor size={32} />,
-    title: 'Customizable Monitoring Plans',
-    description: 'Security solutions tailored specifically to your project requirements and unique facility challenges.'
-  },
-  {
-    icon: <Globe size={32} />,
-    title: 'Global Remote Capability',
-    description: 'Professional surveillance management across borders and time zones, leveraging our international infrastructure.'
+    title: 'High-Definition Support',
+    description: 'Full compatibility with modern HD and 4K camera systems for maximum clarity and detail.'
   },
   {
     icon: <Zap size={32} />,
-    title: 'Cost-Effective Solutions',
-    description: 'Save up to 70% compared to traditional on-ground security personnel while maintaining higher vigilance levels.'
+    title: 'Real-Time Alerts',
+    description: 'Instant notifications sent to your mobile device or security staff the moment a threat is detected.'
+  },
+  {
+    icon: <FileSearch size={32} />,
+    title: 'Suspicious Activity Detection',
+    description: 'Advanced monitoring to identify patterns of interest before incidents escalate into security breaches.'
+  },
+  {
+    icon: <Users size={32} />,
+    title: 'Trained Operators',
+    description: 'Professional security personnel specifically trained in remote surveillance and tactical response.'
+  },
+  {
+    icon: <Globe size={32} />,
+    title: 'Emergency Coordination',
+    description: 'Immediate escalation to local authorities and emergency services during critical security incidents.'
   }
 ];
 
@@ -52,7 +52,7 @@ const Services = () => {
               className="flex items-center space-x-3 text-accent mb-6"
            >
               <div className="w-12 h-0.5 bg-accent"></div>
-              <span className="text-sm font-black uppercase tracking-[0.3em]">Our Specialization</span>
+              <span className="text-sm font-black uppercase tracking-[0.3em]">Our Services</span>
            </motion.div>
            <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -60,7 +60,7 @@ const Services = () => {
               viewport={{ once: true }}
               className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tighter"
            >
-              Comprehensive <span className="text-accent">Security</span> Ecosystem
+              Advanced <span className="text-accent">CCTV Monitoring</span>
            </motion.h2>
            <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -68,7 +68,7 @@ const Services = () => {
               viewport={{ once: true }}
               className="text-xl text-white/50 leading-relaxed"
            >
-              Advanced surveillance solutions designed for maximum mitigation of risks and rapid response to complex security challenges.
+              Our advanced CCTV monitoring services provide 24/7 surveillance using modern technology and trained operators to detect threats, monitor activity, and respond instantly.
            </motion.p>
         </div>
 
