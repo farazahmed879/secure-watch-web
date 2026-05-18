@@ -39,8 +39,48 @@ const FAQS = [
   }
 ];
 
-const FAQ = () => {
+const FAQ = ({ data }: { data?: any }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
+
+  const badge = data?.badge || 'Knowledge Base';
+  const title = data?.title || 'Frequently Asked';
+  const titleAccent = data?.titleAccent || 'Questions';
+
+  const faqsList = data?.faqsList || [
+    {
+      question: 'What does Secure Watch 24 Services do?',
+      answer: 'We provide 24/7 CCTV monitoring and remote security solutions to protect properties, assets, and people in real time.'
+    },
+    {
+      key: 'secp',
+      question: 'Is your company officially registered?',
+      answer: 'Yes, we are registered with SECP (Securities and Exchange Commission of Pakistan) and PSEB (Pakistan Software Export Board).'
+    },
+    {
+      question: 'How does your CCTV monitoring service work?',
+      answer: 'Our trained operators monitor live camera feeds and instantly respond to suspicious activities by alerting security staff, informing the client, and escalating to authorities if required.'
+    },
+    {
+      question: 'What happens during a security incident?',
+      answer: 'We immediately alert security staff, inform the client, and escalate to authorities if required to ensure rapid incident response.'
+    },
+    {
+      question: 'Do you offer 24/7 monitoring?',
+      answer: 'Yes, our services operate 24/7 with uninterrupted surveillance and support, 365 days a year.'
+    },
+    {
+      question: 'Which industries do you serve?',
+      answer: 'We serve residential, commercial, retail, warehouse, construction, and corporate sectors, among others.'
+    },
+    {
+      question: 'Can you work with existing CCTV systems?',
+      answer: 'Yes, most existing CCTV systems are compatible with our remote monitoring infrastructure.'
+    },
+    {
+      question: 'Do you provide reports?',
+      answer: 'Yes, we provide incident reports and routine updates every 30 minutes or as required by the client.'
+    }
+  ];
 
   return (
     <section id="faq" className="py-32 bg-primary-dark/50 relative">
@@ -53,7 +93,7 @@ const FAQ = () => {
               className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full glass-accent border-accent/30 mb-6"
            >
               <HelpCircle size={16} className="text-accent" />
-              <span className="text-xs font-black uppercase tracking-widest text-accent">Knowledge Base</span>
+              <span className="text-xs font-black uppercase tracking-widest text-accent">{badge}</span>
            </motion.div>
            <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -61,12 +101,12 @@ const FAQ = () => {
               viewport={{ once: true }}
               className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tighter"
            >
-              Frequently Asked <span className="text-gradient">Questions</span>
+              {title} <span className="text-gradient">{titleAccent}</span>
            </motion.h2>
         </div>
 
         <div className="max-w-4xl mx-auto space-y-4">
-          {FAQS.map((faq, index) => (
+          {faqsList.map((faq: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 10 }}

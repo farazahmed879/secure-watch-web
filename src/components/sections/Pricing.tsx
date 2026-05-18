@@ -74,7 +74,87 @@ const PRICING = [
   }
 ];
 
-const Pricing = () => {
+const Pricing = ({ data }: { data?: any }) => {
+  const badge = data?.badge || 'Investment Plans';
+  const title = data?.title || 'Transparent';
+  const titleAccent = data?.titleAccent || 'Pricing';
+  const description = data?.description || 'Choose a plan that scales with your growth and security requirements.';
+
+  const plans = data?.plans || [
+    {
+      title: 'Basic Plan',
+      price: '400',
+      description: 'Ideal for small spaces with basic monitoring needs.',
+      features: [
+        'Up to 10 Cameras',
+        '24/7 Continuous Live Monitoring',
+        'Real-Time Instant Alerts',
+        'Hourly Activity Reporting',
+        'Suspicious Activity Notifications',
+        'Professional Monitoring Team',
+        'Secure Data Handling',
+        'Rapid Response & Escalation'
+      ],
+      highlight: false
+    },
+    {
+      title: 'Standard Plan',
+      price: '600',
+      description: 'Perfect for homes and medium-sized offices.',
+      features: [
+        'Up to 20 Cameras',
+        '24/7 Continuous Live Monitoring',
+        'Real-Time Instant Alerts',
+        'Hourly Activity Reporting',
+        'Suspicious Activity Notifications',
+        'Dedicated Monitoring Team',
+        'Secure Data Handling',
+        'Rapid Response & Escalation'
+      ],
+      highlight: true
+    },
+    {
+      title: 'Premium Plan',
+      price: 'Contact',
+      description: 'Tailored for businesses and large-scale areas.',
+      features: [
+        'Flexible Camera Coverage',
+        '24/7 Continuous Live Monitoring',
+        'Real-Time Instant Alerts',
+        'Hourly Reporting',
+        'Dedicated Monitoring Team',
+        'Secure Data Handling',
+        'Rapid Incident Response',
+        'Advanced Monitoring Features'
+      ],
+      highlight: false
+    },
+    {
+      title: 'Custom Plan',
+      price: 'Custom',
+      description: 'Flexible solutions tailored to your business requirements.',
+      features: [
+        'Flexible Camera Coverage',
+        'Custom Reporting',
+        'Priority Response Handling',
+        'Scalable Monitoring Solutions',
+        'Custom Pricing Based on Scope',
+        'Dedicated Monitoring Team'
+      ],
+      highlight: false
+    }
+  ];
+
+  const getPlanIcon = (idx: number) => {
+    const icons = [
+      <Zap size={24} key="zap" />, 
+      <ShieldCheck size={24} key="shield" />, 
+      <Globe size={24} key="globe" />, 
+      <Shield size={24} key="shield-sub" />
+    ];
+    return icons[idx % icons.length];
+  };
+
   return (
     <section id="pricing" className="py-32 relative bg-primary-dark overflow-hidden">
       {/* Decorative background elements */}
@@ -88,7 +168,7 @@ const Pricing = () => {
               viewport={{ once: true }}
               className="inline-flex items-center px-4 py-1.5 rounded-full glass-accent border-accent/30 mb-6"
            >
-              <span className="text-xs font-black uppercase tracking-widest text-accent">Investment Plans</span>
+              <span className="text-xs font-black uppercase tracking-widest text-accent">{badge}</span>
            </motion.div>
            <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -96,7 +176,7 @@ const Pricing = () => {
               viewport={{ once: true }}
               className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tighter"
            >
-              Transparent <span className="text-gradient">Pricing</span>
+              {title} <span className="text-gradient">{titleAccent}</span>
            </motion.h2>
            <motion.p
               initial={{ opacity: 0 }}
@@ -104,12 +184,12 @@ const Pricing = () => {
               viewport={{ once: true }}
               className="text-xl text-white/50"
            >
-              Choose a plan that scales with your growth and security requirements.
+              {description}
            </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {PRICING.map((plan, index) => (
+          {plans.map((plan: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 40 }}
@@ -130,7 +210,7 @@ const Pricing = () => {
 
               <div className="flex items-center justify-between mb-8">
                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${plan.highlight ? 'bg-accent text-primary-dark' : 'bg-white/5 text-white/70'}`}>
-                    {plan.icon}
+                    {getPlanIcon(index)}
                  </div>
                  <h3 className="text-xl font-bold text-white/90">{plan.title}</h3>
               </div>
@@ -144,7 +224,7 @@ const Pricing = () => {
               <p className="text-white/40 text-sm mb-10 min-h-[40px] leading-relaxed italic">{plan.description}</p>
 
               <div className="space-y-4 mb-12 flex-grow">
-                {plan.features.map((feature, fIndex) => (
+                {(plan.features || []).map((feature: string, fIndex: number) => (
                   <div key={fIndex} className="flex items-start space-x-3 text-sm text-white/60">
                     <Check size={18} className="text-accent shrink-0 mt-0.5" />
                     <span className="font-semibold">{feature}</span>
@@ -190,7 +270,7 @@ const Pricing = () => {
            className="mt-12 text-center text-xs text-white/30 italic max-w-2xl mx-auto"
         >
            * Final pricing may vary depending on the exact number of cameras and scope of monitoring services.
-        </motion.p>
+         </motion.p>
       </div>
     </section>
   );

@@ -4,7 +4,20 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Handshake, MapPin, Phone, ShieldCheck, CheckCircle2, Globe, Shield } from 'lucide-react';
 
-const Collaboration = () => {
+const Collaboration = ({ data }: { data?: any }) => {
+  const badge = data?.badge || 'Global Partnership';
+  const title = data?.title || 'International';
+  const titleAccent = data?.titleAccent || 'Partnership';
+  const description = data?.description || 'Secure Watch 24 Services is proudly partnered with Alpha Crime Control LLC, a security company based in Houston, Texas, USA.';
+  
+  const points = data?.points || [
+    'International Security Standards',
+    'Improved Monitoring Capabilities',
+    'Faster Response Coordination',
+    'Global-Level Service Quality',
+    'Enhanced Operational Standards'
+  ];
+
   return (
     <section className="py-32 bg-primary-dark relative overflow-hidden">
       <div className="container relative z-10">
@@ -21,7 +34,7 @@ const Collaboration = () => {
                 className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-accent mb-8 border-accent/20"
               >
                 <Handshake size={20} className="text-accent" />
-                <span className="text-xs font-black uppercase tracking-widest text-accent">Global Partnership</span>
+                <span className="text-xs font-black uppercase tracking-widest text-accent">{badge}</span>
               </motion.div>
               
               <motion.h2
@@ -30,7 +43,7 @@ const Collaboration = () => {
                 viewport={{ once: true }}
                 className="text-4xl md:text-6xl font-black text-white mb-8 tracking-tighter leading-tight"
               >
-                International <span className="text-gradient">Partnership</span>
+                {title} <span className="text-gradient">{titleAccent}</span>
               </motion.h2>
               
               <motion.p
@@ -40,7 +53,7 @@ const Collaboration = () => {
                 transition={{ delay: 0.1 }}
                 className="text-xl text-white/60 mb-12 leading-relaxed"
               >
-                Secure Watch 24 Services is proudly partnered with <span className="text-white font-bold text-2xl">Alpha Crime Control LLC</span>, a security company based in <span className="text-accent underline decoration-accent/20 underline-offset-4">Houston, Texas, USA</span>. 
+                {description}
               </motion.p>
               
               <motion.div
@@ -51,13 +64,7 @@ const Collaboration = () => {
                 className="space-y-4"
               >
                 <h4 className="text-white font-black uppercase tracking-widest text-xs mb-4">Benefits of Partnership</h4>
-                {[
-                  'International Security Standards',
-                  'Improved Monitoring Capabilities',
-                  'Faster Response Coordination',
-                  'Global-Level Service Quality',
-                  'Enhanced Operational Standards'
-                ].map((benefit, i) => (
+                {points.map((benefit: string, i: number) => (
                   <div key={i} className="flex items-center space-x-3 text-white/50">
                     <CheckCircle2 size={18} className="text-accent" />
                     <span className="font-semibold">{benefit}</span>
@@ -88,7 +95,7 @@ const Collaboration = () => {
             </motion.div>
           </div>
         </div>
-
+ 
         {/* Registrations & Certifications */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
            <motion.div
@@ -106,7 +113,7 @@ const Collaboration = () => {
                  <Globe size={32} />
               </div>
            </motion.div>
-
+ 
            <motion.div
              initial={{ opacity: 0, x: 20 }}
              whileInView={{ opacity: 1, x: 0 }}
@@ -123,7 +130,7 @@ const Collaboration = () => {
               </div>
            </motion.div>
         </div>
-
+ 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

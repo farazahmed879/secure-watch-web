@@ -37,7 +37,57 @@ const SERVICES = [
   }
 ];
 
-const Services = () => {
+const Services = ({ data }: { data?: any }) => {
+  const badge = data?.badge || 'Our Services';
+  const title = data?.title || 'Advanced';
+  const titleAccent = data?.titleAccent || 'CCTV Monitoring';
+  const description = data?.description || 'Our advanced CCTV monitoring services provide 24/7 surveillance using modern technology and trained operators to detect threats, monitor activity, and respond instantly.';
+
+  const servicesList = data?.servicesList || [
+    {
+      title: '24/7 Live Monitoring',
+      description: 'Our trained operators monitor live camera feeds and instantly respond to suspicious activities.',
+      badge: 'Popular'
+    },
+    {
+      title: 'High-Definition Support',
+      description: 'Full compatibility with modern HD and 4K camera systems for maximum clarity and detail.',
+      badge: 'Advanced'
+    },
+    {
+      title: 'Real-Time Alerts',
+      description: 'Instant notifications sent to your mobile device or security staff the moment a threat is detected.',
+      badge: 'Critical'
+    },
+    {
+      title: 'Suspicious Activity Detection',
+      description: 'Advanced monitoring to identify patterns of interest before incidents escalate into security breaches.',
+      badge: 'Standard'
+    },
+    {
+      title: 'Trained Operators',
+      description: 'Professional security personnel specifically trained in remote surveillance and tactical response.',
+      badge: 'Expert'
+    },
+    {
+      title: 'Emergency Coordination',
+      description: 'Immediate escalation to local authorities and emergency services during critical security incidents.',
+      badge: 'Core'
+    }
+  ];
+
+  const getServiceIcon = (idx: number) => {
+    const icons = [
+      <Clock size={32} key="clock" />, 
+      <Monitor size={32} key="monitor" />, 
+      <Zap size={32} key="zap" />, 
+      <FileSearch size={32} key="search" />, 
+      <Users size={32} key="users" />, 
+      <Globe size={32} key="globe" />
+    ];
+    return icons[idx % icons.length];
+  };
+
   return (
     <section id="services" className="py-32 bg-primary-dark relative overflow-hidden">
       {/* Background patterns */}
@@ -52,7 +102,7 @@ const Services = () => {
               className="flex items-center space-x-3 text-accent mb-6"
            >
               <div className="w-12 h-0.5 bg-accent"></div>
-              <span className="text-sm font-black uppercase tracking-[0.3em]">Our Services</span>
+              <span className="text-sm font-black uppercase tracking-[0.3em]">{badge}</span>
            </motion.div>
            <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -60,7 +110,7 @@ const Services = () => {
               viewport={{ once: true }}
               className="text-5xl md:text-6xl font-black text-white mb-8 tracking-tighter"
            >
-              Advanced <span className="text-accent">CCTV Monitoring</span>
+              {title} <span className="text-accent">{titleAccent}</span>
            </motion.h2>
            <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -68,12 +118,12 @@ const Services = () => {
               viewport={{ once: true }}
               className="text-xl text-white/50 leading-relaxed"
            >
-              Our advanced CCTV monitoring services provide 24/7 surveillance using modern technology and trained operators to detect threats, monitor activity, and respond instantly.
+              {description}
            </motion.p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SERVICES.map((service, index) => (
+          {servicesList.map((service: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
@@ -86,9 +136,16 @@ const Services = () => {
               
               <div className="glass p-10 rounded-[2.5rem] border-white/5 group-hover:border-accent/30 transition-all duration-500 h-full flex flex-col items-start card-hover">
                 <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-8 text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-500 group-hover:-rotate-6">
-                  {service.icon}
+                  {getServiceIcon(index)}
                 </div>
-                <h3 className="text-2xl font-black mb-4 text-white group-hover:text-accent transition-colors">{service.title}</h3>
+                <div className="flex justify-between items-center w-full mb-4">
+                  <h3 className="text-2xl font-black text-white group-hover:text-accent transition-colors">{service.title}</h3>
+                  {service.badge && (
+                    <span className="text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20">
+                      {service.badge}
+                    </span>
+                  )}
+                </div>
                 <p className="text-white/50 leading-relaxed group-hover:text-white/80 transition-colors">{service.description}</p>
                 
                 <div className="mt-8 pt-8 border-t border-white/5 w-full flex items-center justify-between opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">

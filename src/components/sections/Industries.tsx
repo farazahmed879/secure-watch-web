@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Home, Building2, Store, Warehouse, Construction, Briefcase, ChevronRight, Shield, Zap } from 'lucide-react';
+import { Home, Building2, Store, Warehouse, Construction, Briefcase, ChevronRight, Shield, Zap, ShieldAlert } from 'lucide-react';
 
 const INDUSTRIES = [
   { icon: <Briefcase size={28} />, name: 'Corporate Offices', description: 'High-rise & executive facilities' },
@@ -19,7 +19,54 @@ const INDUSTRIES = [
   { icon: <Construction size={28} />, name: 'Construction Sites', description: 'Equipment & perimeter security' }
 ];
 
-const Industries = () => {
+const getIndustryIcon = (iconName: string, idx: number) => {
+  switch (iconName?.toLowerCase()) {
+    case 'briefcase': return <Briefcase size={28} />;
+    case 'store': return <Store size={28} />;
+    case 'warehouse': return <Warehouse size={28} />;
+    case 'building2': return <Building2 size={28} />;
+    case 'shield': return <Shield size={28} />;
+    case 'home': return <Home size={28} />;
+    case 'zap': return <Zap size={28} />;
+    case 'construction': return <Construction size={28} />;
+    case 'shieldalert': return <ShieldAlert size={28} />;
+    default:
+      if (idx === 0) return <Briefcase size={28} />;
+      if (idx === 1) return <Store size={28} />;
+      if (idx === 2) return <Warehouse size={28} />;
+      if (idx === 3) return <Building2 size={28} />;
+      if (idx === 4) return <Shield size={28} />;
+      if (idx === 5) return <Home size={28} />;
+      if (idx === 6) return <Zap size={28} />;
+      if (idx === 7) return <Store size={28} />;
+      if (idx === 8) return <Building2 size={28} />;
+      if (idx === 9) return <Warehouse size={28} />;
+      if (idx === 10) return <Construction size={28} />;
+      return <Construction size={28} />;
+  }
+};
+
+const Industries = ({ data }: { data?: any }) => {
+  const badge = data?.badge || 'Industries We Serve';
+  const title = data?.title || 'Smart Surveillance';
+  const titleAccent = data?.titleAccent || 'Solutions';
+  const description = data?.description || 'We provide smart surveillance and monitoring solutions tailored to the unique needs of multiple industries to ensure safety, theft prevention, operational monitoring, and complete security.';
+
+  const industriesList = data?.industriesList || [
+    { name: 'Corporate Offices', description: 'High-rise & executive facilities', icon: 'Briefcase' },
+    { name: 'Retail Stores', description: 'Shops & shopping centers', icon: 'Store' },
+    { name: 'Industrial Facilities', description: 'Factories & manufacturing plants', icon: 'Warehouse' },
+    { name: 'Educational Institutions', description: 'Schools, colleges & universities', icon: 'Building2' },
+    { name: 'Healthcare Facilities', description: 'Hospitals & medical centers', icon: 'Shield' },
+    { name: 'Residential Communities', description: 'Gated communities & luxury homes', icon: 'Home' },
+    { name: 'Gas Stations', description: '24/7 fuel station monitoring', icon: 'Zap' },
+    { name: 'Restaurants', description: 'Dining & hospitality security', icon: 'Store' },
+    { name: 'Hotels', description: 'Guest safety & asset protection', icon: 'Building2' },
+    { name: 'Warehouses & Logistics', description: 'Supply chain & storage security', icon: 'Warehouse' },
+    { name: 'Parking Lots', description: 'Vehicle safety & surveillance', icon: 'Construction' },
+    { name: 'Construction Sites', description: 'Equipment & perimeter security', icon: 'Construction' }
+  ];
+
   return (
     <section id="industries" className="py-32 bg-primary-dark/80 relative">
       <div className="container relative z-10">
@@ -32,7 +79,7 @@ const Industries = () => {
                  className="flex items-center space-x-3 text-accent mb-6"
               >
                  <div className="w-12 h-0.5 bg-accent"></div>
-                 <span className="text-sm font-black uppercase tracking-[0.3em]">Industries We Serve</span>
+                 <span className="text-sm font-black uppercase tracking-[0.3em]">{badge}</span>
               </motion.div>
               <motion.h2
                  initial={{ opacity: 0, y: 20 }}
@@ -40,7 +87,7 @@ const Industries = () => {
                  viewport={{ once: true }}
                  className="text-5xl md:text-6xl font-black text-white tracking-tighter"
               >
-                 Smart Surveillance <span className="text-accent underline decoration-accent/20 underline-offset-8">Solutions</span>
+                 {title} <span className="text-accent underline decoration-accent/20 underline-offset-8">{titleAccent}</span>
               </motion.h2>
            </div>
            <motion.p
@@ -49,12 +96,12 @@ const Industries = () => {
               viewport={{ once: true }}
               className="text-lg text-white/50 max-w-sm italic leading-relaxed"
            >
-              We provide smart surveillance and monitoring solutions tailored to the unique needs of multiple industries to ensure safety, theft prevention, operational monitoring, and complete security.
+              {description}
            </motion.p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {INDUSTRIES.map((industry, index) => (
+          {industriesList.map((industry: any, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -64,7 +111,7 @@ const Industries = () => {
               className="glass p-8 rounded-[2rem] flex items-center space-x-6 group hover:bg-white/5 transition-all duration-500 border-white/5 hover:border-accent/40 cursor-pointer"
             >
               <div className="w-16 h-16 rounded-2xl bg-primary-light flex items-center justify-center text-white/40 group-hover:text-accent group-hover:scale-110 transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.2)]">
-                {industry.icon}
+                {getIndustryIcon(industry.icon, index)}
               </div>
               <div className="flex-grow">
                  <h4 className="text-lg font-black text-white group-hover:text-accent transition-colors">{industry.name}</h4>

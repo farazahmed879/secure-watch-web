@@ -12,7 +12,7 @@ const HERO_IMAGES = [
   '/monitor-3.png',
 ];
 
-const Hero = () => {
+const Hero = ({ data }: { data?: any }) => {
   const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
@@ -21,6 +21,26 @@ const Hero = () => {
     }, 5000);
     return () => clearInterval(timer);
   }, []);
+
+  const badge = data?.badge || 'Security That Never Sleeps';
+  const title = data?.title || 'Advanced CCTV Monitoring';
+  const titleAccent = data?.titleAccent || 'Real-Time Protection';
+  const h3Text = data?.h3Text || '24/7 professional CCTV monitoring and smart surveillance solutions.';
+  const description = data?.description || 'Secure Watch 24 Services provides reliable remote monitoring, instant alerts, and advanced surveillance solutions designed to protect properties, people, and businesses around the clock.';
+  
+  const btnPrimaryText = data?.btnPrimaryText || 'Get Started';
+  const btnPrimaryLink = data?.btnPrimaryLink || '/contact';
+  const btnOutlineText = data?.btnOutlineText || 'Contact Us';
+  const btnOutlineLink = data?.btnOutlineLink || '/contact';
+  const btnDemoText = data?.btnDemoText || 'Request a Demo';
+  const btnDemoLink = data?.btnDemoLink || '/contact';
+
+  const stats = data?.stats || [
+    { number: '10+', label: 'Happy Clients' },
+    { number: '24/7', label: 'Monitoring' },
+    { number: '15+', label: 'Countries' },
+    { number: '99.9%', label: 'Uptime' }
+  ];
 
   return (
     <section className="relative min-h-screen flex items-center pt-12 lg:pt-20 overflow-hidden bg-primary-dark">
@@ -78,17 +98,17 @@ const Hero = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-accent"></span>
               </div>
-              <span className="text-xs font-black tracking-[0.2em] text-accent uppercase">Security That Never Sleeps</span>
+              <span className="text-xs font-black tracking-[0.2em] text-accent uppercase">{badge}</span>
             </motion.div>
 
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl md:text-7xl font-black mb-2 leading-[1.1] tracking-tighter"
+              className="text-5xl md:text-7xl font-black mb-2 leading-[1.1] tracking-tighter text-white"
             >
-              Advanced CCTV Monitoring<br />
-              <span className="text-gradient">& Real-Time Protection</span>
+              {title}<br />
+              <span className="text-gradient">{titleAccent}</span>
             </motion.h1>
 
             <motion.h3
@@ -97,7 +117,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-2xl md:text-3xl font-bold text-accent mb-4 tracking-tight"
             >
-              24/7 professional CCTV monitoring and smart surveillance solutions.
+              {h3Text}
             </motion.h3>
 
             <motion.p 
@@ -106,7 +126,7 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-lg md:text-xl text-white/80 max-w-2xl mb-8 leading-relaxed"
             >
-              Secure Watch 24 Services provides reliable remote monitoring, instant alerts, and advanced surveillance solutions designed to protect properties, people, and businesses around the clock.
+              {description}
             </motion.p>
 
             <motion.div 
@@ -116,24 +136,24 @@ const Hero = () => {
               className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 justify-center lg:justify-start"
             >
               <Link 
-                href="/contact"
-                className="btn-primary flex items-center group w-full sm:w-auto justify-center"
+                href={btnPrimaryLink}
+                className="btn-primary flex items-center group w-full sm:w-auto justify-center text-primary-dark"
               >
-                Get Started
+                {btnPrimaryText}
                 <ShieldCheck className="ml-3 group-hover:rotate-12 transition-transform" size={24} />
               </Link>
               <Link 
-                href="/contact"
-                className="btn-outline flex items-center group w-full sm:w-auto justify-center"
+                href={btnOutlineLink}
+                className="btn-outline flex items-center group w-full sm:w-auto justify-center text-white border-white/20"
               >
-                Contact Us
+                {btnOutlineText}
                 <ArrowRight className="ml-3 group-hover:translate-x-2 transition-transform" size={24} />
               </Link>
               <Link 
-                href="/contact"
-                className="btn-outline flex items-center group w-full sm:w-auto justify-center text-accent border-accent/20"
+                href={btnDemoLink}
+                className="btn-outline flex items-center group w-full sm:w-auto justify-center text-accent border-accent/20 hover:bg-accent/10"
               >
-                Request a Demo
+                {btnDemoText}
                 <Zap className="ml-3 group-hover:scale-110 transition-transform" size={24} />
               </Link>
             </motion.div>
@@ -145,10 +165,9 @@ const Hero = () => {
               transition={{ duration: 1, delay: 1 }}
               className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-12 w-full max-w-4xl border-t border-white/10 pt-6"
             >
-              <StatItem number="10+" label="Happy Clients" />
-              <StatItem number="24/7" label="Monitoring" />
-              <StatItem number="15+" label="Countries" />
-              <StatItem number="99.9%" label="Uptime" />
+              {stats.map((item: any, idx: number) => (
+                <StatItem key={idx} number={item.number || item.value} label={item.label} />
+              ))}
             </motion.div>
           </div>
 
