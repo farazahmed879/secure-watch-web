@@ -123,3 +123,41 @@
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
+
+/* ── Elegant Custom Scrollbar ── */
+
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.15);
+  border-radius: 999px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 211, 238, 0.45);
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: rgba(34, 211, 238, 0.6);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 211, 238, 0.15) transparent;
+}
+

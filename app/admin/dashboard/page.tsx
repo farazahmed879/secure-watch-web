@@ -106,23 +106,23 @@ export default function AdminDashboard() {
   const currentData = sectionsData[activeSection] || {};
 
   return (
-    <div className="min-h-screen bg-primary-dark flex text-white font-sans overflow-x-hidden">
+    <div className="h-screen bg-primary-dark flex text-white font-sans overflow-hidden">
       {/* 1. LEFT SIDEBAR */}
-      <aside className="w-80 bg-black/30 border-r border-white/5 flex flex-col justify-between shrink-0 p-8">
+      <aside className="w-60 h-full bg-black/30 border-r border-white/5 flex flex-col justify-between shrink-0 px-4 py-5 overflow-y-auto">
         <div>
           {/* Brand */}
-          <div className="flex items-center space-x-3 mb-12">
-            <div className="w-10 h-10 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center text-accent">
-              <ShieldCheck size={20} />
+          <div className="flex items-center space-x-2.5 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center text-accent">
+              <ShieldCheck size={16} />
             </div>
             <div>
-              <h2 className="font-black text-lg tracking-tight">Secure Watch</h2>
-              <p className="text-[10px] font-black uppercase tracking-wider text-accent">Admin Console</p>
+              <h2 className="font-black text-sm tracking-tight">Secure Watch</h2>
+              <p className="text-[9px] font-black uppercase tracking-wider text-accent">Admin Console</p>
             </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-2">
+          <nav className="space-y-1">
             {SECTION_METADATA.map((item) => {
               const Icon = item.icon;
               const isActive = activeSection === item.name;
@@ -134,13 +134,13 @@ export default function AdminDashboard() {
                     setSuccessMsg('');
                     setErrorMsg('');
                   }}
-                  className={`w-full flex items-center space-x-4 px-5 py-4 rounded-2xl font-semibold text-sm transition-all duration-300 ${
+                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 ${
                     isActive
-                      ? 'bg-accent text-primary-dark shadow-lg shadow-accent/15'
+                      ? 'bg-accent text-primary-dark shadow-md shadow-accent/15'
                       : 'text-white/50 hover:bg-white/5 hover:text-white'
                   }`}
                 >
-                  <Icon size={18} />
+                  <Icon size={15} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -149,17 +149,17 @@ export default function AdminDashboard() {
         </div>
 
         {/* Footer Actions */}
-        <div className="space-y-4 pt-8 border-t border-white/5">
+        <div className="space-y-2 pt-4 border-t border-white/5">
           <button
             onClick={() => router.push('/')}
-            className="w-full flex items-center justify-center space-x-3 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-bold py-4 rounded-xl text-xs uppercase tracking-widest transition-all"
+            className="w-full flex items-center justify-center space-x-2 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-bold py-2.5 rounded-lg text-[10px] uppercase tracking-widest transition-all"
           >
             <Eye size={14} />
             <span>Public Site</span>
           </button>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center space-x-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold py-4 rounded-xl text-xs uppercase tracking-widest transition-all border border-red-500/10"
+            className="w-full flex items-center justify-center space-x-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold py-2.5 rounded-lg text-[10px] uppercase tracking-widest transition-all border border-red-500/10"
           >
             <LogOut size={14} />
             <span>Sign Out</span>
@@ -168,29 +168,33 @@ export default function AdminDashboard() {
       </aside>
 
       {/* 2. MAIN WORKING PANEL */}
-      <main className="flex-grow p-12 flex flex-col justify-between max-h-screen overflow-y-auto">
+      <main className="flex-grow px-8 py-6 flex flex-col justify-between h-full overflow-y-auto">
         <div>
           {/* Header */}
-          <header className="flex justify-between items-center mb-12">
+          <header className="flex justify-between items-center mb-6">
             <div>
-              <span className="text-xs font-black uppercase tracking-widest text-accent">Active Workspace</span>
-              <h1 className="text-4xl font-black tracking-tight mt-2 capitalize">{activeSection.replace('_', ' ')} Settings</h1>
+              <span className="text-[10px] font-black uppercase tracking-widest text-accent">Active Workspace</span>
+              <h1 className="text-2xl font-black tracking-tight mt-1 capitalize">{activeSection.replace('_', ' ')} Settings</h1>
             </div>
 
             {/* Quick Actions */}
             <div className="flex space-x-4">
-              <button
+              <motion.button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center space-x-2 bg-accent text-primary-dark font-black uppercase text-xs tracking-widest py-4 px-8 rounded-xl shadow-lg hover:bg-white hover:scale-103 transition-all disabled:opacity-50"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
+                className="group relative flex items-center space-x-2 bg-gradient-to-r from-cyan-400 to-blue-500 text-primary-dark font-black uppercase text-[10px] tracking-[0.15em] py-3 px-6 rounded-xl shadow-[0_6px_24px_rgba(34,211,238,0.25)] hover:shadow-[0_10px_32px_rgba(34,211,238,0.4)] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden"
               >
+                {/* Shine sweep effect */}
+                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
                 {saving ? (
-                  <RefreshCw size={14} className="animate-spin" />
+                  <RefreshCw size={15} className="animate-spin relative z-10" />
                 ) : (
-                  <Save size={14} />
+                  <Save size={15} className="relative z-10" />
                 )}
-                <span>{saving ? 'Saving...' : 'Save Changes'}</span>
-              </button>
+                <span className="relative z-10">{saving ? 'Saving...' : 'Save Changes'}</span>
+              </motion.button>
             </div>
           </header>
 
@@ -201,7 +205,7 @@ export default function AdminDashboard() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="mb-8 flex items-center space-x-3 p-5 rounded-2xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-semibold"
+                className="mb-4 flex items-center space-x-2 p-3 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-semibold"
               >
                 <Check size={18} />
                 <span>{successMsg}</span>
@@ -212,7 +216,7 @@ export default function AdminDashboard() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="mb-8 flex items-center space-x-3 p-5 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-semibold"
+                className="mb-4 flex items-center space-x-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold"
               >
                 <AlertCircle size={18} />
                 <span>{errorMsg}</span>
@@ -221,19 +225,19 @@ export default function AdminDashboard() {
           </AnimatePresence>
 
           {/* Dynamic Forms Workspace */}
-          <div className="glass p-10 rounded-[3rem] border-white/5 space-y-8 shadow-2xl bg-white/[0.01]">
-            <h3 className="text-xl font-bold border-b border-white/5 pb-4 mb-8">Content Parameters</h3>
+          <div className="glass p-6 rounded-2xl border-white/5 space-y-5 shadow-xl bg-white/[0.01]">
+            <h3 className="text-sm font-bold border-b border-white/5 pb-3 mb-4 uppercase tracking-wider text-white/70">Content Parameters</h3>
             
             {/* HERO FORM BUILDER */}
             {activeSection === 'hero' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                   <input
                     type="text"
                     value={currentData.badge || ''}
                     onChange={(e) => updateField('hero', 'badge', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
                   />
                 </div>
                 <div>
@@ -316,7 +320,7 @@ export default function AdminDashboard() {
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Hero Stat Badges</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     {(currentData.stats || []).map((stat: any, index: number) => (
-                      <div key={index} className="bg-white/5 p-5 rounded-2xl border border-white/5">
+                      <div key={index} className="bg-white/5 p-3 rounded-xl border border-white/5">
                         <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Value</label>
                         <input
                           type="text"
@@ -348,15 +352,15 @@ export default function AdminDashboard() {
 
             {/* ABOUT US FORM BUILDER */}
             {activeSection === 'about_us' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                     <input
                       type="text"
                       value={currentData.badge || ''}
                       onChange={(e) => updateField('about_us', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
                     />
                   </div>
                   <div>
@@ -365,7 +369,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.title || ''}
                       onChange={(e) => updateField('about_us', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
                     />
                   </div>
                   <div>
@@ -374,12 +378,12 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.titleAccent || ''}
                       onChange={(e) => updateField('about_us', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   {/* Paragraphs */}
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Paragraph One</label>
@@ -391,7 +395,7 @@ export default function AdminDashboard() {
                         newPara[0] = e.target.value;
                         updateField('about_us', 'paragraphs', newPara);
                       }}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
                     />
                   </div>
                   <div>
@@ -404,13 +408,13 @@ export default function AdminDashboard() {
                         newPara[1] = e.target.value;
                         updateField('about_us', 'paragraphs', newPara);
                       }}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
                     />
                   </div>
                 </div>
 
                 {/* Mission Statement */}
-                <div className="bg-white/3 rounded-3xl p-6 border border-white/5">
+                <div className="bg-white/3 rounded-xl p-4 border border-white/5">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Mission Statement</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div>
@@ -422,7 +426,7 @@ export default function AdminDashboard() {
                           const newMission = { ...(currentData.mission || {}), title: e.target.value };
                           updateField('about_us', 'mission', newMission);
                         }}
-                        className="w-full bg-black/25 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                        className="w-full bg-black/25 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-accent/40"
                       />
                     </div>
                     <div className="md:col-span-2">
@@ -434,14 +438,14 @@ export default function AdminDashboard() {
                           const newMission = { ...(currentData.mission || {}), text: e.target.value };
                           updateField('about_us', 'mission', newMission);
                         }}
-                        className="w-full bg-black/25 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                        className="w-full bg-black/25 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-accent/40"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Why Choose Us & SubStats */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <div className="flex justify-between items-center mb-4">
                       <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Why Choose Us Points</h4>
@@ -468,7 +472,7 @@ export default function AdminDashboard() {
                     <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Side stats</h4>
                     <div className="grid grid-cols-2 gap-6">
                       {(currentData.subStats || []).map((stat: any, index: number) => (
-                        <div key={index} className="bg-white/5 p-5 rounded-2xl border border-white/5">
+                        <div key={index} className="bg-white/5 p-3 rounded-xl border border-white/5">
                           <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Stat Value</label>
                           <input
                             type="text"
@@ -501,15 +505,15 @@ export default function AdminDashboard() {
 
             {/* KEY FEATURES FORM BUILDER */}
             {activeSection === 'key_features' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                     <input
                       type="text"
                       value={currentData.badge || ''}
                       onChange={(e) => updateField('key_features', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -518,7 +522,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.title || ''}
                       onChange={(e) => updateField('key_features', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -527,7 +531,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.titleAccent || ''}
                       onChange={(e) => updateField('key_features', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -536,16 +540,16 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.description || ''}
                       onChange={(e) => updateField('key_features', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Features (4 Items)</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {(currentData.features || []).map((feat: any, index: number) => (
-                      <div key={index} className="bg-white/3 p-6 rounded-3xl border border-white/5 space-y-4">
+                      <div key={index} className="bg-white/3 p-4 rounded-xl border border-white/5 space-y-3">
                         <span className="text-xs font-bold text-accent">Feature #{index + 1}</span>
                         <div>
                           <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Title</label>
@@ -582,15 +586,15 @@ export default function AdminDashboard() {
 
             {/* SERVICES FORM BUILDER */}
             {activeSection === 'services' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                     <input
                       type="text"
                       value={currentData.badge || ''}
                       onChange={(e) => updateField('services', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -599,7 +603,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.title || ''}
                       onChange={(e) => updateField('services', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -608,7 +612,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.titleAccent || ''}
                       onChange={(e) => updateField('services', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -617,16 +621,16 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.description || ''}
                       onChange={(e) => updateField('services', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Service Offerings</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {(currentData.servicesList || []).map((srv: any, index: number) => (
-                      <div key={index} className="bg-white/3 p-6 rounded-3xl border border-white/5 space-y-4">
+                      <div key={index} className="bg-white/3 p-4 rounded-xl border border-white/5 space-y-3">
                         <div className="flex justify-between items-center">
                           <span className="text-xs font-bold text-accent">Service #{index + 1}</span>
                           <input
@@ -676,15 +680,15 @@ export default function AdminDashboard() {
 
             {/* INDUSTRIES FORM BUILDER */}
             {activeSection === 'industries' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                     <input
                       type="text"
                       value={currentData.badge || ''}
                       onChange={(e) => updateField('industries', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -693,7 +697,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.title || ''}
                       onChange={(e) => updateField('industries', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -702,7 +706,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.titleAccent || ''}
                       onChange={(e) => updateField('industries', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -711,16 +715,16 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.description || ''}
                       onChange={(e) => updateField('industries', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Industries (4 Categories)</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {(currentData.industriesList || []).map((ind: any, index: number) => (
-                      <div key={index} className="bg-white/3 p-6 rounded-3xl border border-white/5 space-y-4">
+                      <div key={index} className="bg-white/3 p-4 rounded-xl border border-white/5 space-y-3">
                         <span className="text-xs font-bold text-accent">Industry #{index + 1}</span>
                         <div>
                           <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Sector Name</label>
@@ -757,15 +761,15 @@ export default function AdminDashboard() {
 
             {/* PRICING FORM BUILDER */}
             {activeSection === 'pricing' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                     <input
                       type="text"
                       value={currentData.badge || ''}
                       onChange={(e) => updateField('pricing', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -774,7 +778,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.title || ''}
                       onChange={(e) => updateField('pricing', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -783,7 +787,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.titleAccent || ''}
                       onChange={(e) => updateField('pricing', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -792,16 +796,16 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.description || ''}
                       onChange={(e) => updateField('pricing', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-6">Investment Packages</h4>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                     {(currentData.plans || []).map((plan: any, index: number) => (
-                      <div key={index} className={`p-8 rounded-[2.5rem] border ${plan.highlight ? 'bg-accent/5 border-accent' : 'bg-white/3 border-white/5'} space-y-6`}>
+                      <div key={index} className={`p-5 rounded-xl border ${plan.highlight ? 'bg-accent/5 border-accent' : 'bg-white/3 border-white/5'} space-y-4`}>
                         <div className="flex justify-between items-center border-b border-white/5 pb-4">
                           <span className="text-md font-bold">{plan.title}</span>
                           <button
@@ -898,15 +902,15 @@ export default function AdminDashboard() {
 
             {/* COLLABORATION FORM BUILDER */}
             {activeSection === 'collaboration' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                     <input
                       type="text"
                       value={currentData.badge || ''}
                       onChange={(e) => updateField('collaboration', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -915,7 +919,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.title || ''}
                       onChange={(e) => updateField('collaboration', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -924,7 +928,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.titleAccent || ''}
                       onChange={(e) => updateField('collaboration', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -933,7 +937,7 @@ export default function AdminDashboard() {
                       rows={3}
                       value={currentData.description || ''}
                       onChange={(e) => updateField('collaboration', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                 </div>
@@ -942,7 +946,7 @@ export default function AdminDashboard() {
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Operations Guidelines (4 Points)</h4>
                   <div className="space-y-4">
                     {(currentData.points || []).map((pt: string, index: number) => (
-                      <div key={index} className="flex items-center space-x-3 bg-white/3 p-4 rounded-2xl border border-white/5">
+                      <div key={index} className="flex items-center space-x-3 bg-white/3 p-3 rounded-xl border border-white/5">
                         <span className="text-xs font-bold text-accent shrink-0 w-8 text-center">#{index + 1}</span>
                         <input
                           type="text"
@@ -963,15 +967,15 @@ export default function AdminDashboard() {
 
             {/* FAQ FORM BUILDER */}
             {activeSection === 'faq' && (
-              <div className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="space-y-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   <div>
                     <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                     <input
                       type="text"
                       value={currentData.badge || ''}
                       onChange={(e) => updateField('faq', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -980,7 +984,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.title || ''}
                       onChange={(e) => updateField('faq', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div>
@@ -989,7 +993,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.titleAccent || ''}
                       onChange={(e) => updateField('faq', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                   <div className="md:col-span-3">
@@ -998,7 +1002,7 @@ export default function AdminDashboard() {
                       type="text"
                       value={currentData.description || ''}
                       onChange={(e) => updateField('faq', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
                 </div>
@@ -1007,7 +1011,7 @@ export default function AdminDashboard() {
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-6">FAQ Q&A List</h4>
                   <div className="space-y-6">
                     {(currentData.faqsList || []).map((faq: any, index: number) => (
-                      <div key={index} className="bg-white/3 p-6 rounded-3xl border border-white/5 space-y-4">
+                      <div key={index} className="bg-white/3 p-4 rounded-xl border border-white/5 space-y-3">
                         <span className="text-xs font-bold text-accent">Question #{index + 1}</span>
                         <div>
                           <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Question Text</label>
@@ -1044,14 +1048,14 @@ export default function AdminDashboard() {
 
             {/* CEO MESSAGE FORM BUILDER */}
             {activeSection === 'ceo_section' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
                   <input
                     type="text"
                     value={currentData.badge || ''}
                     onChange={(e) => updateField('ceo_section', 'badge', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
                   />
                 </div>
                 <div>
@@ -1060,7 +1064,7 @@ export default function AdminDashboard() {
                     type="text"
                     value={currentData.title || ''}
                     onChange={(e) => updateField('ceo_section', 'title', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -1078,7 +1082,7 @@ export default function AdminDashboard() {
                     type="text"
                     value={currentData.ceoName || ''}
                     onChange={(e) => updateField('ceo_section', 'ceoName', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                   />
                 </div>
                 <div>
@@ -1087,7 +1091,7 @@ export default function AdminDashboard() {
                     type="text"
                     value={currentData.ceoRole || ''}
                     onChange={(e) => updateField('ceo_section', 'ceoRole', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
+                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                   />
                 </div>
                 <div className="md:col-span-2">
@@ -1105,7 +1109,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Footer info */}
-        <footer className="mt-12 pt-8 border-t border-white/5 text-center text-xs text-white/20">
+        <footer className="mt-6 pt-4 border-t border-white/5 text-center text-[10px] text-white/20">
           <span>Secure Watch 24 Services Admin Console • Connected via Prisma Client to MongoDB Cluster</span>
         </footer>
       </main>

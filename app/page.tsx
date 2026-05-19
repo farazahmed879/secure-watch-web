@@ -19,7 +19,8 @@ export default function Home() {
   useEffect(() => {
     const fetchDynamicData = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/sections');
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api';
+        const res = await fetch(`${apiUrl}/sections`);
         if (res.ok) {
           const data = await res.json();
           setSectionsData(data);
