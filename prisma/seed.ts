@@ -253,16 +253,19 @@ async function main() {
     {
       name: 'collaboration',
       data: {
-        badge: 'Strong Collaboration',
-        title: 'Coordinated',
-        titleAccent: 'Operations',
-        description: 'We work seamlessly with local authorities, onsite guards, and emergency services to provide rapid response.',
+        badge: 'Global Partnership',
+        title: 'International',
+        titleAccent: 'Partnership',
+        description: 'Secure Watch 24 Services is proudly partnered with Alpha Crime Control LLC, a security company based in Houston, Texas, USA.',
         points: [
-          'Coordinated police and emergency services escalation within seconds of verified threats',
-          'Direct real-time visual feed sharing with onsite security teams and stakeholders',
-          'Daily log synchronization and customized reporting sent directly to managers',
-          'Proactive health monitoring of all CCTV equipment and network connections'
-        ]
+          'International Security Standards',
+          'Improved Monitoring Capabilities',
+          'Faster Response Coordination',
+          'Global-Level Service Quality',
+          'Enhanced Operational Standards'
+        ],
+        usaAddress: '7447 Harwin Drive, Houston, TX, USA',
+        usaPhone: '+1 (281) 702-9418'
       }
     },
     {

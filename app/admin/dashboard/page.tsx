@@ -7,11 +7,11 @@ import {
   ShieldCheck, Layout, User, LogOut, Save, RefreshCw, Eye,
   Plus, Trash2, Check, AlertCircle, HelpCircle,
   Activity, ArrowRight, Zap, Target, Camera, Lock,
-  FileText, Briefcase, Award, Settings, CheckSquare
+  FileText, Briefcase, Award, Settings, CheckSquare, Mail
 } from 'lucide-react';
 import { apiFetch, getAuthToken, removeAuthToken } from '../../../src/utils/api';
 
-type SectionName = 'hero' | 'about_us' | 'key_features' | 'services' | 'industries' | 'pricing' | 'collaboration' | 'faq' | 'ceo_section';
+type SectionName = 'hero' | 'about_us' | 'key_features' | 'services' | 'industries' | 'pricing' | 'collaboration' | 'faq' | 'ceo_section' | 'contacts';
 
 const SECTION_METADATA: { name: SectionName; label: string; icon: any }[] = [
   { name: 'hero', label: 'Hero Banner', icon: Activity },
@@ -22,7 +22,8 @@ const SECTION_METADATA: { name: SectionName; label: string; icon: any }[] = [
   { name: 'pricing', label: 'Pricing Plans', icon: Award },
   { name: 'collaboration', label: 'Collaboration', icon: Settings },
   { name: 'faq', label: 'FAQ', icon: HelpCircle },
-  { name: 'ceo_section', label: 'CEO Message', icon: FileText }
+  { name: 'ceo_section', label: 'CEO Message', icon: FileText },
+  { name: 'contacts', label: 'Contact Submissions', icon: Mail }
 ];
 
 export default function AdminDashboard() {
@@ -33,6 +34,10 @@ export default function AdminDashboard() {
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Contacts submissions state
+  const [contacts, setContacts] = useState<any[]>([]);
+  const [fetchingContacts, setFetchingContacts] = useState(false);
 
   // Authentication check & Fetch all sections
   useEffect(() => {
@@ -56,6 +61,37 @@ export default function AdminDashboard() {
 
     fetchAllData();
   }, [router]);
+
+  // Fetch contact submissions when activeSection changes to 'contacts'
+  useEffect(() => {
+    if (activeSection === 'contacts') {
+      const fetchContacts = async () => {
+        try {
+          setFetchingContacts(true);
+          const data = await apiFetch('/contact');
+          setContacts(data);
+        } catch (err: any) {
+          setErrorMsg(err.message || 'Failed to load contact submissions.');
+        } finally {
+          setFetchingContacts(false);
+        }
+      };
+      fetchContacts();
+    }
+  }, [activeSection]);
+
+  const handleDeleteContact = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this contact submission?')) return;
+    try {
+      await apiFetch(`/contact/${id}`, { method: 'DELETE' });
+      setContacts(prev => prev.filter(c => c.id !== id));
+      setSuccessMsg('Submission deleted successfully.');
+      setTimeout(() => setSuccessMsg(''), 4000);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to delete submission.');
+      setTimeout(() => setErrorMsg(''), 4000);
+    }
+  };
 
   const handleLogout = () => {
     removeAuthToken();
@@ -179,22 +215,24 @@ export default function AdminDashboard() {
 
             {/* Quick Actions */}
             <div className="flex space-x-4">
-              <motion.button
-                onClick={handleSave}
-                disabled={saving}
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
-                className="group relative flex items-center space-x-2 bg-gradient-to-r from-cyan-400 to-blue-500 text-primary-dark font-black uppercase text-[10px] tracking-[0.15em] py-3 px-6 rounded-xl shadow-[0_6px_24px_rgba(34,211,238,0.25)] hover:shadow-[0_10px_32px_rgba(34,211,238,0.4)] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden"
-              >
-                {/* Shine sweep effect */}
-                <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
-                {saving ? (
-                  <RefreshCw size={15} className="animate-spin relative z-10" />
-                ) : (
-                  <Save size={15} className="relative z-10" />
-                )}
-                <span className="relative z-10">{saving ? 'Saving...' : 'Save Changes'}</span>
-              </motion.button>
+              {activeSection !== 'contacts' && (
+                <motion.button
+                  onClick={handleSave}
+                  disabled={saving}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="group relative flex items-center space-x-2 bg-gradient-to-r from-cyan-400 to-blue-500 text-primary-dark font-black uppercase text-[10px] tracking-[0.15em] py-3 px-6 rounded-xl shadow-[0_6px_24px_rgba(34,211,238,0.25)] hover:shadow-[0_10px_32px_rgba(34,211,238,0.4)] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden"
+                >
+                  {/* Shine sweep effect */}
+                  <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+                  {saving ? (
+                    <RefreshCw size={15} className="animate-spin relative z-10" />
+                  ) : (
+                    <Save size={15} className="relative z-10" />
+                  )}
+                  <span className="relative z-10">{saving ? 'Saving...' : 'Save Changes'}</span>
+                </motion.button>
+              )}
             </div>
           </header>
 
@@ -940,6 +978,24 @@ export default function AdminDashboard() {
                       className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
                     />
                   </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">USA Headquarters Address</label>
+                    <input
+                      type="text"
+                      value={currentData.usaAddress || ''}
+                      onChange={(e) => updateField('collaboration', 'usaAddress', e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">USA Direct Phone</label>
+                    <input
+                      type="text"
+                      value={currentData.usaPhone || ''}
+                      onChange={(e) => updateField('collaboration', 'usaPhone', e.target.value)}
+                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -1103,6 +1159,98 @@ export default function AdminDashboard() {
                     className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
                   />
                 </div>
+              </div>
+            )}
+
+            {/* CONTACT SUBMISSIONS MANAGER */}
+            {activeSection === 'contacts' && (
+              <div className="space-y-6">
+                {fetchingContacts ? (
+                  <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                    <div className="w-8 h-8 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
+                    <span className="text-white/60 font-bold uppercase tracking-widest text-[10px]">Loading submissions...</span>
+                  </div>
+                ) : contacts.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center py-16 px-4 text-center glass rounded-2xl border-white/5">
+                    <Mail size={32} className="text-white/20 mb-4 animate-pulse" />
+                    <h4 className="text-sm font-bold text-white/70 mb-1">No Submissions Yet</h4>
+                    <p className="text-xs text-white/40 max-w-sm">When users submit queries through the Contact Form, they will be listed here.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-5">
+                    <div className="flex justify-between items-center pb-2 border-b border-white/5">
+                      <span className="text-xs font-black uppercase tracking-widest text-white/40">{contacts.length} Total Messages</span>
+                      <button
+                        onClick={async () => {
+                          try {
+                            setFetchingContacts(true);
+                            const data = await apiFetch('/contact');
+                            setContacts(data);
+                          } catch (err: any) {
+                            setErrorMsg('Failed to refresh data.');
+                          } finally {
+                            setFetchingContacts(false);
+                          }
+                        }}
+                        className="flex items-center space-x-1.5 text-accent hover:text-white transition-colors text-xs font-bold"
+                      >
+                        <RefreshCw size={12} />
+                        <span>Refresh List</span>
+                      </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-5 max-h-[70vh] overflow-y-auto pr-1">
+                      {contacts.map((item) => (
+                        <motion.div
+                          key={item.id}
+                          layout
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="glass p-6 rounded-2xl border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-colors relative group"
+                        >
+                          <div className="flex justify-between items-start mb-3">
+                            <div className="space-y-1">
+                              <h4 className="text-sm font-bold text-white tracking-tight">{item.name}</h4>
+                              <div className="flex items-center space-x-3 text-xs">
+                                <a 
+                                  href={`mailto:${item.email}`}
+                                  className="text-cyan-400 hover:text-cyan-300 transition-colors font-semibold"
+                                >
+                                  {item.email}
+                                </a>
+                                <span className="text-white/20">•</span>
+                                <span className="text-white/40">
+                                  {new Date(item.createdAt).toLocaleString()}
+                                </span>
+                              </div>
+                            </div>
+
+                            <button
+                              onClick={() => handleDeleteContact(item.id)}
+                              className="text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 p-2 rounded-xl border border-red-500/10 transition-colors opacity-80 group-hover:opacity-100"
+                              title="Delete Submission"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+
+                          <div className="space-y-2 mt-4 pt-4 border-t border-white/5">
+                            <div>
+                              <span className="text-[9px] font-black uppercase tracking-widest text-accent">Subject</span>
+                              <p className="text-xs font-bold text-white/90 mt-0.5">{item.subject}</p>
+                            </div>
+                            <div className="mt-3">
+                              <span className="text-[9px] font-black uppercase tracking-widest text-accent">Message</span>
+                              <div className="bg-black/20 p-4 rounded-xl border border-white/5 mt-1">
+                                <p className="text-xs text-white/80 whitespace-pre-wrap leading-relaxed">{item.message}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

@@ -27,7 +27,11 @@ export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
     ...(options.headers || {}),
   };
 
-  const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+  // Route /contact requests to the local Next.js API endpoint instead of the remote backend
+  const isContactRoute = endpoint.startsWith('/contact');
+  const baseUrl = isContactRoute ? '/api' : API_BASE_URL;
+
+  const res = await fetch(`${baseUrl}${endpoint}`, {
     ...options,
     headers,
   });

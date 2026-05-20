@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, MessageSquare, ShieldCheck, ArrowLeft } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Phone, MapPin, Send, MessageSquare, ShieldCheck, ArrowLeft, AlertCircle, Check } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '../../src/components/Navbar';
 import Footer from '../../src/components/Footer';
+import { apiFetch } from '../../src/utils/api';
 
 const ContactPage = () => {
   const [formState, setFormState] = useState({
@@ -14,11 +15,34 @@ const ContactPage = () => {
     subject: '',
     message: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would send this to an API
-    alert('Thank you for reaching out! Our security team will contact you shortly.');
+    setLoading(true);
+    setSuccessMsg('');
+    setErrorMsg('');
+
+    try {
+      const response = await apiFetch('/contact', {
+        method: 'POST',
+        body: JSON.stringify(formState),
+      });
+
+      setSuccessMsg(response.message || 'Thank you for reaching out! Our security team will contact you shortly.');
+      setFormState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+      });
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Failed to send your message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,6 +82,31 @@ const ContactPage = () => {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="glass p-8 md:p-12 rounded-[3rem] border-white/5 shadow-2xl"
               >
+                <AnimatePresence mode="wait">
+                  {successMsg && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="flex items-start space-x-3 p-4 rounded-2xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm mb-6"
+                    >
+                      <Check size={18} className="shrink-0 mt-0.5" />
+                      <span>{successMsg}</span>
+                    </motion.div>
+                  )}
+                  {errorMsg && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="flex items-start space-x-3 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm mb-6"
+                    >
+                      <AlertCircle size={18} className="shrink-0 mt-0.5" />
+                      <span>{errorMsg}</span>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
@@ -65,7 +114,8 @@ const ContactPage = () => {
                       <input 
                         type="text" 
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all"
+                        disabled={loading}
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all disabled:opacity-50"
                         placeholder="John Doe"
                         value={formState.name}
                         onChange={(e) => setFormState({...formState, name: e.target.value})}
@@ -76,7 +126,8 @@ const ContactPage = () => {
                       <input 
                         type="email" 
                         required
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all"
+                        disabled={loading}
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all disabled:opacity-50"
                         placeholder="john@example.com"
                         value={formState.email}
                         onChange={(e) => setFormState({...formState, email: e.target.value})}
@@ -88,7 +139,8 @@ const ContactPage = () => {
                     <input 
                       type="text" 
                       required
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all"
+                      disabled={loading}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all disabled:opacity-50"
                       placeholder="Security Audit / Pricing Inquiry"
                       value={formState.subject}
                       onChange={(e) => setFormState({...formState, subject: e.target.value})}
@@ -99,7 +151,8 @@ const ContactPage = () => {
                     <textarea 
                       required
                       rows={5}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all resize-none"
+                      disabled={loading}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all resize-none disabled:opacity-50"
                       placeholder="Describe your security requirements..."
                       value={formState.message}
                       onChange={(e) => setFormState({...formState, message: e.target.value})}
@@ -107,10 +160,17 @@ const ContactPage = () => {
                   </div>
                   <button 
                     type="submit"
-                    className="w-full bg-accent text-primary-dark font-black uppercase tracking-[0.2em] py-5 rounded-2xl hover:bg-white transition-all duration-300 flex items-center justify-center group"
+                    disabled={loading}
+                    className="w-full bg-accent text-primary-dark font-black uppercase tracking-[0.2em] py-5 rounded-2xl hover:bg-white transition-all duration-300 flex items-center justify-center group disabled:opacity-55 disabled:cursor-not-allowed"
                   >
-                    Send Message
-                    <Send size={18} className="ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    {loading ? (
+                      <div className="w-5 h-5 border-2 border-primary-dark border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send size={18} className="ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      </>
+                    )}
                   </button>
                 </form>
               </motion.div>

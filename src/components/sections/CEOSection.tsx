@@ -14,26 +14,26 @@ const CEOSection = ({ data }: { data?: any }) => {
   const signatureText = data?.signatureText || 'Core Leadership Principles';
 
   return (
-    <section className="py-32 bg-primary-dark relative overflow-hidden">
+    <section className="py-20 bg-primary-dark relative overflow-hidden">
       <div className="container relative z-10">
-        <div className="glass p-12 md:p-20 rounded-[4rem] border-white/5 relative overflow-hidden">
+        <div className="glass p-8 md:p-12 rounded-[2rem] border-white/5 relative overflow-hidden">
           {/* Decorative background */}
           <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-accent/10 to-transparent -z-10"></div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
             {/* CEO Image Container */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="lg:col-span-2 relative aspect-[4/5] rounded-[3rem] overflow-hidden group"
+              className="lg:col-span-2 relative aspect-[4/5] rounded-[1.5rem] overflow-hidden group"
             >
               <div className="absolute inset-0 bg-accent/20 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
               <div className="flex items-center justify-center h-full bg-primary-light/50">
                  <span className="text-white/20 font-black text-8xl">MA</span>
               </div>
               <div className="absolute bottom-0 left-0 w-full p-8 z-20 bg-gradient-to-t from-primary-dark via-primary-dark/50 to-transparent">
-                 <h3 className="text-3xl font-black text-white">{ceoName}</h3>
+                 <h3 className="text-2xl md:text-3xl font-black text-white">{ceoName}</h3>
                  <p className="text-accent font-black uppercase tracking-widest text-xs">{ceoRole}</p>
               </div>
             </motion.div>
@@ -48,8 +48,8 @@ const CEOSection = ({ data }: { data?: any }) => {
               >
                 <Quote size={80} className="text-accent/10 absolute -top-12 -left-8 -z-10" />
                 
-                <h4 className="text-white/40 text-xs font-black uppercase tracking-widest mb-6">{badge}</h4>
-                <h2 className="text-4xl md:text-5xl font-black text-white mb-10 tracking-tighter leading-tight italic">
+                <h4 className="text-white/40 text-xs font-black uppercase tracking-widest mb-4">{badge}</h4>
+                <h2 className="text-3xl md:text-4xl font-black text-white mb-8 tracking-tighter leading-tight italic">
                   "{quote}"
                 </h2>
  
