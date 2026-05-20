@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+
     // Save submission to MongoDB
     const submission = await prisma.contactSubmission.create({
       data: {
@@ -65,6 +66,7 @@ export async function GET(request: NextRequest) {
       const status = authError.message.includes('Forbidden') ? 403 : 401;
       return NextResponse.json({ error: authError.message }, { status });
     }
+
 
     // Fetch submissions sorted by most recent
     const submissions = await prisma.contactSubmission.findMany({
