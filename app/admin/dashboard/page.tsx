@@ -7,11 +7,13 @@ import {
   ShieldCheck, Layout, User, LogOut, Save, RefreshCw, Eye,
   Plus, Trash2, Check, AlertCircle, HelpCircle,
   Activity, ArrowRight, Zap, Target, Camera, Lock,
-  FileText, Briefcase, Award, Settings, CheckSquare
+  FileText, Briefcase, Award, Settings, CheckSquare,
+  Sun, Moon
 } from 'lucide-react';
 import { apiFetch, getAuthToken, removeAuthToken } from '../../../src/utils/api';
+import { AdminInput, AdminTextarea, SectionFields, SectionHeader, AdminCard, AdminSelect, AdminButton, DeleteButton, ListItemRow, FeatureListRow, AdminImageUpload } from './components';
 
-type SectionName = 'hero' | 'about_us' | 'key_features' | 'services' | 'industries' | 'pricing' | 'collaboration' | 'faq' | 'ceo_section';
+type SectionName = 'hero' | 'about_us' | 'key_features' | 'services' | 'industries' | 'pricing' | 'collaboration' | 'faq' | 'ceo_section' | 'footer';
 
 const SECTION_METADATA: { name: SectionName; label: string; icon: any }[] = [
   { name: 'hero', label: 'Hero Banner', icon: Activity },
@@ -22,8 +24,151 @@ const SECTION_METADATA: { name: SectionName; label: string; icon: any }[] = [
   { name: 'pricing', label: 'Pricing Plans', icon: Award },
   { name: 'collaboration', label: 'Collaboration', icon: Settings },
   { name: 'faq', label: 'FAQ', icon: HelpCircle },
-  { name: 'ceo_section', label: 'CEO Message', icon: FileText }
+  { name: 'ceo_section', label: 'CEO Message', icon: FileText },
+  { name: 'footer', label: 'Footer Settings', icon: Layout }
 ];
+
+const DEFAULT_VALUES: Record<SectionName, any> = {
+  hero: {
+    badge: 'Security That Never Sleeps',
+    title: 'Advanced CCTV Monitoring',
+    titleAccent: 'Real-Time Protection',
+    h3Text: '24/7 professional CCTV monitoring and smart surveillance solutions.',
+    description: 'Secure Watch 24 Services provides reliable remote monitoring, instant alerts, and advanced surveillance solutions designed to protect properties, people, and businesses around the clock.',
+    btnPrimaryText: 'Get Started',
+    btnPrimaryLink: '/contact',
+    btnOutlineText: 'Contact Us',
+    btnOutlineLink: '/contact',
+    btnDemoText: 'Request a Demo',
+    btnDemoLink: '/contact',
+    stats: [
+      { number: '10+', label: 'Happy Clients' },
+      { number: '24/7', label: 'Monitoring' },
+      { number: '15+', label: 'Countries' },
+      { number: '99.9%', label: 'Uptime' }
+    ]
+  },
+  about_us: {
+    badge: 'ABOUT SECURE WATCH 24 SERVICES',
+    title: 'Pioneering Next-Gen',
+    titleAccent: 'Surveillance',
+    description: 'We are a dedicated team of security experts providing high-performance monitoring and smart detection systems to keep you safe.',
+    points: [
+      'State-of-the-Art Operations Command Center',
+      'Advanced Predictive AI Detection Systems',
+      'Dedicated Certified Incident Teams',
+      'Seamless Multi-Platform Smart Connectivity'
+    ],
+    stats: [
+      { number: '10+', label: 'Clients Worldwide' },
+      { number: '99.9%', label: 'SLA Reliability' },
+      { number: '150+', label: 'Managed Terminals' }
+    ]
+  },
+  key_features: {
+    badge: 'KEY CAPABILITIES',
+    title: 'Engineered For Absolute',
+    titleAccent: 'Vigilance',
+    description: 'Discover the advanced features that make our security command systems stand out from traditional methods.',
+    features: [
+      { title: 'Zero Latency Stream', description: 'Real-time telemetry and video compression guarantees immediate command feedback.' },
+      { title: 'Smart Threat Logic', description: 'Advanced behavioral models detect anomalies and auto-flag risk factors.' },
+      { title: 'Command Integration', description: 'Consolidate multiple feeds, maps, and reports into a singular workspace.' }
+    ]
+  },
+  services: {
+    badge: 'WHAT WE DELIVER',
+    title: 'Customizable Security',
+    titleAccent: 'Provisions',
+    description: 'Select from our range of critical services designed to provide bulletproof business continuity.',
+    servicesList: [
+      { title: 'CCTV Live Monitor', description: 'Continuous operator inspection of live cameras with instant incident response.', icon: 'Camera' },
+      { title: 'AI Anomaly Analysis', description: 'Machine learning modules continuously parse feeds to highlight anomalies.', icon: 'Zap' },
+      { title: 'Incident Response', description: 'Coordinated escalation triggers to alert local security forces instantly.', icon: 'ShieldCheck' }
+    ]
+  },
+  industries: {
+    badge: 'GLOBAL PROTECTION',
+    title: 'Shielding Critical Focus',
+    titleAccent: 'Sectors',
+    description: 'We deploy specialized defense tactics across numerous commercial, public, and private domains.',
+    industriesList: [
+      { title: 'Corporate Offices', description: 'Secure corporate spaces, parking structures, and access points.' },
+      { title: 'Commercial Retail', description: 'Minimize inventory shrink, track customer metrics, and secure premises.' },
+      { title: 'Logistics Command', description: 'Track asset status, vehicle entries, and high-value cargo.' }
+    ]
+  },
+  pricing: {
+    badge: 'TRANSPARENT VALUE',
+    title: 'Flexible Plans For Every',
+    titleAccent: 'Operation',
+    description: 'Choose a billing scope that matches your asset volume, operator count, and SLA needs.',
+    plans: [
+      { title: 'Startup Tier', price: '$299', description: 'Ideal for small offices or retail branches.', features: ['Up to 5 Camera Feeds', 'Standard SLA Response', 'Daily Activity Log'], highlight: false },
+      { title: 'Corporate Command', price: '$899', description: 'Best for large corporate and logistics centers.', features: ['Up to 25 Camera Feeds', 'Priority SLA Response', 'Advanced Smart Threat Detection', 'Weekly Threat Reports'], highlight: true }
+    ]
+  },
+  collaboration: {
+    badge: 'PARTNERS IN SECURITY',
+    title: 'Integrated Command',
+    titleAccent: 'Allies',
+    description: 'Our software connects seamlessly with premium physical hardware and telemetry tools.',
+    partners: [
+      { name: 'Axis Communications', role: 'Hardware Partner' },
+      { name: 'Milestone Systems', role: 'VMS Alliance' }
+    ]
+  },
+  faq: {
+    badge: 'COMMON RESOLUTIONS',
+    title: 'Frequently Answered',
+    titleAccent: 'Queries',
+    description: 'Get immediate clarification on system setup, hardware compatibility, and deployment times.',
+    faqsList: [
+      { question: 'What is the setup time for a standard system?', answer: 'Most cloud integrations can be deployed within 48 hours once hardware is mounted.' },
+      { question: 'Does the AI system support legacy cameras?', answer: 'Yes! Our gateway devices can convert existing RTSP analog feeds into smart streams.' }
+    ]
+  },
+  ceo_section: {
+    badge: 'A Message From Our Leader',
+    title: 'Integrity. Vigilance. Trust.',
+    quote: 'Secure Watch 24 Services is committed to delivering reliable security monitoring solutions that help businesses and individuals stay protected 24/7.',
+    ceoName: 'Mr. Muzaffar Ali',
+    ceoRole: 'Founder & CEO',
+    signatureText: 'Core Leadership Principles',
+    imageUrl: ''
+  },
+  footer: {
+    description: 'Secure Watch 24 Services is committed to delivering reliable security monitoring solutions that help businesses and individuals stay protected 24/7.',
+    badge: 'Always Watching. Always Protecting.',
+    badge2: 'Your Security, Our Priority.',
+    socialLinks: [
+      { platform: 'facebook', url: '#' },
+      { platform: 'twitter', url: '#' },
+      { platform: 'linkedin', url: 'https://linkedin.com/in/muzaffarali1493' }
+    ],
+    quickLinks: [
+      { label: 'About Us', url: '#about' },
+      { label: 'Services', url: '#services' },
+      { label: 'Industries', url: '#industries' },
+      { label: 'Pricing Plans', url: '#pricing' },
+      { label: 'FAQs', url: '#faq' }
+    ],
+    phone1: '+92 309 8344704',
+    phone2: '+92 344 2553858',
+    email1: 'contact@sw24services.com',
+    email2: 'securewatch24services@gmail.com',
+    website: 'www.sw24services.com',
+    websiteUrl: 'http://www.sw24services.com',
+    address: 'Office No D-35, 2nd Floor,\nShahrah-e-Faisal,\nKarachi, Pakistan',
+    hours: '24/7 — Monday to Sunday',
+    copyright: '© 2026 SECURE WATCH. MISSION CRITICAL PROTECTION.',
+    credit: 'Created by Alpha Crime Control Partnership',
+    statusLabel: 'Status: Online',
+    statusUrl: '#',
+    systemLogLabel: 'System Log',
+    systemLogUrl: '#'
+  }
+};
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -33,6 +178,20 @@ export default function AdminDashboard() {
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('admin-theme');
+    if (savedTheme === 'light') setDarkMode(false);
+  }, []);
+
+  const toggleTheme = () => {
+    setDarkMode(prev => {
+      const next = !prev;
+      localStorage.setItem('admin-theme', next ? 'dark' : 'light');
+      return next;
+    });
+  };
 
   // Authentication check & Fetch all sections
   useEffect(() => {
@@ -46,7 +205,17 @@ export default function AdminDashboard() {
       try {
         setLoading(true);
         const data = await apiFetch('/sections');
-        setSectionsData(data);
+        
+        // Merge fetched data with default static fallbacks so that everything is prefilled
+        const mergedData: Record<string, any> = {};
+        (Object.keys(DEFAULT_VALUES) as SectionName[]).forEach((key) => {
+          mergedData[key] = {
+            ...DEFAULT_VALUES[key],
+            ...(data[key] || {})
+          };
+        });
+
+        setSectionsData(mergedData);
       } catch (err: any) {
         setErrorMsg('Failed to load database content. Server may be offline.');
       } finally {
@@ -106,9 +275,9 @@ export default function AdminDashboard() {
   const currentData = sectionsData[activeSection] || {};
 
   return (
-    <div className="h-screen bg-primary-dark flex text-white font-sans overflow-hidden">
+    <div data-admin-theme={darkMode ? 'dark' : 'light'} className="admin-panel h-screen flex font-sans overflow-hidden transition-colors duration-300" style={{ backgroundColor: 'var(--admin-bg)', color: 'var(--admin-text)' }}>
       {/* 1. LEFT SIDEBAR */}
-      <aside className="w-60 h-full bg-black/30 border-r border-white/5 flex flex-col justify-between shrink-0 px-4 py-5 overflow-y-auto">
+      <aside className="w-60 h-full border-r flex flex-col justify-between shrink-0 px-4 py-5 overflow-y-auto transition-colors duration-300" style={{ backgroundColor: 'var(--admin-sidebar)', borderColor: 'var(--admin-border)' }}>
         <div>
           {/* Brand */}
           <div className="flex items-center space-x-2.5 mb-6">
@@ -137,8 +306,9 @@ export default function AdminDashboard() {
                   className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 ${
                     isActive
                       ? 'bg-accent text-primary-dark shadow-md shadow-accent/15'
-                      : 'text-white/50 hover:bg-white/5 hover:text-white'
+                      : 'hover:bg-[var(--admin-nav-hover)]'
                   }`}
+                  style={!isActive ? { color: 'var(--admin-nav-text)' } : {}}
                 >
                   <Icon size={15} />
                   <span>{item.label}</span>
@@ -149,21 +319,19 @@ export default function AdminDashboard() {
         </div>
 
         {/* Footer Actions */}
-        <div className="space-y-2 pt-4 border-t border-white/5">
-          <button
-            onClick={() => router.push('/')}
-            className="w-full flex items-center justify-center space-x-2 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white font-bold py-2.5 rounded-lg text-[10px] uppercase tracking-widest transition-all"
-          >
+        <div className="space-y-2 pt-4" style={{ borderTop: '1px solid var(--admin-border)' }}>
+          <AdminButton variant="ghost" onClick={toggleTheme} style={{ backgroundColor: 'var(--admin-input)', color: 'var(--admin-text-muted)' }}>
+            {darkMode ? <Sun size={14} /> : <Moon size={14} />}
+            <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
+          </AdminButton>
+          <AdminButton variant="ghost" onClick={() => router.push('/')} style={{ backgroundColor: 'var(--admin-input)', color: 'var(--admin-text-muted)' }}>
             <Eye size={14} />
             <span>Public Site</span>
-          </button>
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center space-x-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 font-bold py-2.5 rounded-lg text-[10px] uppercase tracking-widest transition-all border border-red-500/10"
-          >
+          </AdminButton>
+          <AdminButton variant="danger" onClick={handleLogout}>
             <LogOut size={14} />
             <span>Sign Out</span>
-          </button>
+          </AdminButton>
         </div>
       </aside>
 
@@ -179,13 +347,7 @@ export default function AdminDashboard() {
 
             {/* Quick Actions */}
             <div className="flex space-x-4">
-              <motion.button
-                onClick={handleSave}
-                disabled={saving}
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.96 }}
-                className="group relative flex items-center space-x-2 bg-gradient-to-r from-cyan-400 to-blue-500 text-primary-dark font-black uppercase text-[10px] tracking-[0.15em] py-3 px-6 rounded-xl shadow-[0_6px_24px_rgba(34,211,238,0.25)] hover:shadow-[0_10px_32px_rgba(34,211,238,0.4)] transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed overflow-hidden"
-              >
+              <AdminButton variant="primary" onClick={handleSave} disabled={saving} className="group">
                 {/* Shine sweep effect */}
                 <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
                 {saving ? (
@@ -194,7 +356,7 @@ export default function AdminDashboard() {
                   <Save size={15} className="relative z-10" />
                 )}
                 <span className="relative z-10">{saving ? 'Saving...' : 'Save Changes'}</span>
-              </motion.button>
+              </AdminButton>
             </div>
           </header>
 
@@ -225,277 +387,81 @@ export default function AdminDashboard() {
           </AnimatePresence>
 
           {/* Dynamic Forms Workspace */}
-          <div className="glass p-6 rounded-2xl border-white/5 space-y-5 shadow-xl bg-white/[0.01]">
-            <h3 className="text-sm font-bold border-b border-white/5 pb-3 mb-4 uppercase tracking-wider text-white/70">Content Parameters</h3>
+          <div className="glass p-6 rounded-2xl space-y-5 shadow-xl transition-colors duration-300" style={{ borderColor: 'var(--admin-border)', backgroundColor: 'var(--admin-surface)' }}>
+            <h3 className="text-sm font-bold pb-3 mb-4 uppercase tracking-wider" style={{ borderBottom: '1px solid var(--admin-border)', color: 'var(--admin-text-secondary)' }}>Content Parameters</h3>
             
-            {/* HERO FORM BUILDER */}
+            {/* ═══ HERO ═══ */}
             {activeSection === 'hero' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                  <input
-                    type="text"
-                    value={currentData.badge || ''}
-                    onChange={(e) => updateField('hero', 'badge', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">H3 Subheading</label>
-                  <input
-                    type="text"
-                    value={currentData.h3Text || ''}
-                    onChange={(e) => updateField('hero', 'h3Text', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Main</label>
-                  <input
-                    type="text"
-                    value={currentData.title || ''}
-                    onChange={(e) => updateField('hero', 'title', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Accent (Gradient)</label>
-                  <input
-                    type="text"
-                    value={currentData.titleAccent || ''}
-                    onChange={(e) => updateField('hero', 'titleAccent', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Description Paragraph</label>
-                  <textarea
-                    rows={4}
-                    value={currentData.description || ''}
-                    onChange={(e) => updateField('hero', 'description', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40 resize-y"
-                  />
-                </div>
-                
-                {/* Hero Button Labels & Links */}
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Primary Button Text</label>
-                  <input
-                    type="text"
-                    value={currentData.btnPrimaryText || ''}
-                    onChange={(e) => updateField('hero', 'btnPrimaryText', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Primary Button Link</label>
-                  <input
-                    type="text"
-                    value={currentData.btnPrimaryLink || ''}
-                    onChange={(e) => updateField('hero', 'btnPrimaryLink', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Outline Button Text</label>
-                  <input
-                    type="text"
-                    value={currentData.btnOutlineText || ''}
-                    onChange={(e) => updateField('hero', 'btnOutlineText', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Outline Button Link</label>
-                  <input
-                    type="text"
-                    value={currentData.btnOutlineLink || ''}
-                    onChange={(e) => updateField('hero', 'btnOutlineLink', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40"
-                  />
-                </div>
-
-                {/* Hero Stats Array Editor */}
+                <AdminInput label="Section Badge" value={currentData.badge || ''} onChange={(v) => updateField('hero', 'badge', v)} />
+                <AdminInput label="H3 Subheading" value={currentData.h3Text || ''} onChange={(v) => updateField('hero', 'h3Text', v)} />
+                <AdminInput label="Title Main" value={currentData.title || ''} onChange={(v) => updateField('hero', 'title', v)} />
+                <AdminInput label="Title Accent (Gradient)" value={currentData.titleAccent || ''} onChange={(v) => updateField('hero', 'titleAccent', v)} />
+                <AdminTextarea label="Description Paragraph" value={currentData.description || ''} onChange={(v) => updateField('hero', 'description', v)} rows={4} className="md:col-span-2" />
+                <AdminInput label="Primary Button Text" value={currentData.btnPrimaryText || ''} onChange={(v) => updateField('hero', 'btnPrimaryText', v)} />
+                <AdminInput label="Primary Button Link" value={currentData.btnPrimaryLink || ''} onChange={(v) => updateField('hero', 'btnPrimaryLink', v)} />
+                <AdminInput label="Outline Button Text" value={currentData.btnOutlineText || ''} onChange={(v) => updateField('hero', 'btnOutlineText', v)} />
+                <AdminInput label="Outline Button Link" value={currentData.btnOutlineLink || ''} onChange={(v) => updateField('hero', 'btnOutlineLink', v)} />
                 <div className="md:col-span-2 mt-4">
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Hero Stat Badges</h4>
+                  <SectionHeader title="Hero Stat Badges" count={(currentData.stats || []).length} addLabel="Add Stat" onAdd={() => updateField('hero', 'stats', [...(currentData.stats || []), { number: '', label: '' }])} />
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    {(currentData.stats || []).map((stat: any, index: number) => (
-                      <div key={index} className="bg-white/5 p-3 rounded-xl border border-white/5">
-                        <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Value</label>
-                        <input
-                          type="text"
-                          value={stat.number || ''}
-                          onChange={(e) => {
-                            const newStats = [...currentData.stats];
-                            newStats[index] = { ...newStats[index], number: e.target.value };
-                            updateField('hero', 'stats', newStats);
-                          }}
-                          className="w-full bg-black/20 border border-white/10 rounded-lg p-2 text-white text-sm focus:outline-none mb-3"
-                        />
+                    {(currentData.stats || []).map((stat: any, i: number) => (
+                      <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white/5 p-3 rounded-xl border border-white/5 relative group/stat">
+                        <div className="flex justify-between items-start mb-2">
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30">Value</label>
+                          <DeleteButton onClick={() => { const a = [...currentData.stats]; a.splice(i, 1); updateField('hero', 'stats', a); }} groupName="stat" size={10} />
+                        </div>
+                        <input type="text" value={stat.number || ''} onChange={(e) => { const a = [...currentData.stats]; a[i] = { ...a[i], number: e.target.value }; updateField('hero', 'stats', a); }} className="w-full bg-black/20 border border-white/10 rounded-lg p-2 text-white text-sm focus:outline-none mb-3" />
                         <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Label</label>
-                        <input
-                          type="text"
-                          value={stat.label || ''}
-                          onChange={(e) => {
-                            const newStats = [...currentData.stats];
-                            newStats[index] = { ...newStats[index], label: e.target.value };
-                            updateField('hero', 'stats', newStats);
-                          }}
-                          className="w-full bg-black/20 border border-white/10 rounded-lg p-2 text-white text-xs focus:outline-none"
-                        />
-                      </div>
+                        <input type="text" value={stat.label || ''} onChange={(e) => { const a = [...currentData.stats]; a[i] = { ...a[i], label: e.target.value }; updateField('hero', 'stats', a); }} className="w-full bg-black/20 border border-white/10 rounded-lg p-2 text-white text-xs focus:outline-none" />
+                      </motion.div>
                     ))}
                   </div>
                 </div>
               </div>
             )}
 
-            {/* ABOUT US FORM BUILDER */}
+            {/* ═══ ABOUT US ═══ */}
             {activeSection === 'about_us' && (
               <div className="space-y-5">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                    <input
-                      type="text"
-                      value={currentData.badge || ''}
-                      onChange={(e) => updateField('about_us', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Main</label>
-                    <input
-                      type="text"
-                      value={currentData.title || ''}
-                      onChange={(e) => updateField('about_us', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Accent</label>
-                    <input
-                      type="text"
-                      value={currentData.titleAccent || ''}
-                      onChange={(e) => updateField('about_us', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
-                    />
-                  </div>
+                  <AdminInput label="Section Badge" value={currentData.badge || ''} onChange={(v) => updateField('about_us', 'badge', v)} />
+                  <AdminInput label="Title Main" value={currentData.title || ''} onChange={(v) => updateField('about_us', 'title', v)} />
+                  <AdminInput label="Title Accent" value={currentData.titleAccent || ''} onChange={(v) => updateField('about_us', 'titleAccent', v)} />
                 </div>
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {/* Paragraphs */}
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Paragraph One</label>
-                    <textarea
-                      rows={3}
-                      value={(currentData.paragraphs && currentData.paragraphs[0]) || ''}
-                      onChange={(e) => {
-                        const newPara = [...(currentData.paragraphs || [])];
-                        newPara[0] = e.target.value;
-                        updateField('about_us', 'paragraphs', newPara);
-                      }}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Paragraph Two</label>
-                    <textarea
-                      rows={3}
-                      value={(currentData.paragraphs && currentData.paragraphs[1]) || ''}
-                      onChange={(e) => {
-                        const newPara = [...(currentData.paragraphs || [])];
-                        newPara[1] = e.target.value;
-                        updateField('about_us', 'paragraphs', newPara);
-                      }}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
-                    />
-                  </div>
+                  <AdminTextarea label="Paragraph One" value={(currentData.paragraphs && currentData.paragraphs[0]) || ''} onChange={(v) => { const p = [...(currentData.paragraphs || [])]; p[0] = v; updateField('about_us', 'paragraphs', p); }} />
+                  <AdminTextarea label="Paragraph Two" value={(currentData.paragraphs && currentData.paragraphs[1]) || ''} onChange={(v) => { const p = [...(currentData.paragraphs || [])]; p[1] = v; updateField('about_us', 'paragraphs', p); }} />
                 </div>
-
-                {/* Mission Statement */}
                 <div className="bg-white/3 rounded-xl p-4 border border-white/5">
                   <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Mission Statement</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Mission Title</label>
-                      <input
-                        type="text"
-                        value={(currentData.mission && currentData.mission.title) || ''}
-                        onChange={(e) => {
-                          const newMission = { ...(currentData.mission || {}), title: e.target.value };
-                          updateField('about_us', 'mission', newMission);
-                        }}
-                        className="w-full bg-black/25 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-accent/40"
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Mission Description</label>
-                      <input
-                        type="text"
-                        value={(currentData.mission && currentData.mission.text) || ''}
-                        onChange={(e) => {
-                          const newMission = { ...(currentData.mission || {}), text: e.target.value };
-                          updateField('about_us', 'mission', newMission);
-                        }}
-                        className="w-full bg-black/25 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:border-accent/40"
-                      />
-                    </div>
+                    <AdminInput label="Mission Title" value={(currentData.mission && currentData.mission.title) || ''} variant="deep" onChange={(v) => updateField('about_us', 'mission', { ...(currentData.mission || {}), title: v })} />
+                    <AdminInput label="Mission Description" value={(currentData.mission && currentData.mission.text) || ''} variant="deep" onChange={(v) => updateField('about_us', 'mission', { ...(currentData.mission || {}), text: v })} className="md:col-span-2" />
                   </div>
                 </div>
-
-                {/* Why Choose Us & SubStats */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <div className="flex justify-between items-center mb-4">
-                      <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Why Choose Us Points</h4>
-                    </div>
+                    <SectionHeader title="Why Choose Us Points" count={(currentData.whyChooseUs || []).length} addLabel="Add" size="compact" onAdd={() => updateField('about_us', 'whyChooseUs', [...(currentData.whyChooseUs || []), ''])} />
                     <div className="space-y-3">
-                      {(currentData.whyChooseUs || []).map((point: string, index: number) => (
-                        <div key={index} className="flex items-center space-x-3">
-                          <input
-                            type="text"
-                            value={point}
-                            onChange={(e) => {
-                              const newPoints = [...currentData.whyChooseUs];
-                              newPoints[index] = e.target.value;
-                              updateField('about_us', 'whyChooseUs', newPoints);
-                            }}
-                            className="flex-grow bg-white/5 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none"
-                          />
-                        </div>
+                      {(currentData.whyChooseUs || []).map((point: string, i: number) => (
+                        <ListItemRow key={i} value={point} index={i} onChange={(v) => { const a = [...currentData.whyChooseUs]; a[i] = v; updateField('about_us', 'whyChooseUs', a); }} onDelete={() => { const a = [...currentData.whyChooseUs]; a.splice(i, 1); updateField('about_us', 'whyChooseUs', a); }} />
                       ))}
                     </div>
                   </div>
-
                   <div>
-                    <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Side stats</h4>
+                    <SectionHeader title="Side Stats" count={(currentData.subStats || []).length} addLabel="Add" size="compact" onAdd={() => updateField('about_us', 'subStats', [...(currentData.subStats || []), { value: '', label: '' }])} />
                     <div className="grid grid-cols-2 gap-6">
-                      {(currentData.subStats || []).map((stat: any, index: number) => (
-                        <div key={index} className="bg-white/5 p-3 rounded-xl border border-white/5">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Stat Value</label>
-                          <input
-                            type="text"
-                            value={stat.value || ''}
-                            onChange={(e) => {
-                              const newStats = [...currentData.subStats];
-                              newStats[index] = { ...newStats[index], value: e.target.value };
-                              updateField('about_us', 'subStats', newStats);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-lg p-2 text-white text-sm focus:outline-none mb-3"
-                          />
+                      {(currentData.subStats || []).map((stat: any, i: number) => (
+                        <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white/5 p-3 rounded-xl border border-white/5 relative group/stat">
+                          <div className="flex justify-between items-start mb-2">
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/30">Stat Value</label>
+                            <DeleteButton onClick={() => { const a = [...currentData.subStats]; a.splice(i, 1); updateField('about_us', 'subStats', a); }} groupName="stat" size={10} />
+                          </div>
+                          <input type="text" value={stat.value || ''} onChange={(e) => { const a = [...currentData.subStats]; a[i] = { ...a[i], value: e.target.value }; updateField('about_us', 'subStats', a); }} className="w-full bg-black/20 border border-white/10 rounded-lg p-2 text-white text-sm focus:outline-none mb-3" />
                           <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Label</label>
-                          <input
-                            type="text"
-                            value={stat.label || ''}
-                            onChange={(e) => {
-                              const newStats = [...currentData.subStats];
-                              newStats[index] = { ...newStats[index], label: e.target.value };
-                              updateField('about_us', 'subStats', newStats);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-lg p-2 text-white text-xs focus:outline-none"
-                          />
-                        </div>
+                          <input type="text" value={stat.label || ''} onChange={(e) => { const a = [...currentData.subStats]; a[i] = { ...a[i], label: e.target.value }; updateField('about_us', 'subStats', a); }} className="w-full bg-black/20 border border-white/10 rounded-lg p-2 text-white text-xs focus:outline-none" />
+                        </motion.div>
                       ))}
                     </div>
                   </div>
@@ -503,393 +469,96 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* KEY FEATURES FORM BUILDER */}
+            {/* ═══ KEY FEATURES ═══ */}
             {activeSection === 'key_features' && (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                    <input
-                      type="text"
-                      value={currentData.badge || ''}
-                      onChange={(e) => updateField('key_features', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Main</label>
-                    <input
-                      type="text"
-                      value={currentData.title || ''}
-                      onChange={(e) => updateField('key_features', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Accent</label>
-                    <input
-                      type="text"
-                      value={currentData.titleAccent || ''}
-                      onChange={(e) => updateField('key_features', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Description</label>
-                    <input
-                      type="text"
-                      value={currentData.description || ''}
-                      onChange={(e) => updateField('key_features', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                </div>
-
+                <SectionFields section="key_features" data={currentData} updateField={updateField} />
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Features (4 Items)</h4>
+                  <SectionHeader title="Features" count={(currentData.features || []).length} addLabel="Add Feature" onAdd={() => updateField('key_features', 'features', [...(currentData.features || []), { title: '', description: '', icon: 'Zap' }])} />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {(currentData.features || []).map((feat: any, index: number) => (
-                      <div key={index} className="bg-white/3 p-4 rounded-xl border border-white/5 space-y-3">
-                        <span className="text-xs font-bold text-accent">Feature #{index + 1}</span>
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Title</label>
-                          <input
-                            type="text"
-                            value={feat.title || ''}
-                            onChange={(e) => {
-                              const newFeat = [...currentData.features];
-                              newFeat[index] = { ...newFeat[index], title: e.target.value };
-                              updateField('key_features', 'features', newFeat);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Description</label>
-                          <textarea
-                            rows={3}
-                            value={feat.description || ''}
-                            onChange={(e) => {
-                              const newFeat = [...currentData.features];
-                              newFeat[index] = { ...newFeat[index], description: e.target.value };
-                              updateField('key_features', 'features', newFeat);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-xs focus:outline-none"
-                          />
-                        </div>
-                      </div>
+                    {(currentData.features || []).map((feat: any, i: number) => (
+                      <AdminCard key={i} label="Feature" index={i} onDelete={() => { const a = [...currentData.features]; a.splice(i, 1); updateField('key_features', 'features', a); }}>
+                        <AdminSelect label="Icon" value={feat.icon || 'Zap'} onChange={(v) => { const a = [...currentData.features]; a[i] = { ...a[i], icon: v }; updateField('key_features', 'features', a); }} options={['Activity','ShieldAlert','Bell','Users','Laptop','Lock','Globe','Zap','Camera','Target']} />
+                        <AdminInput label="Title" value={feat.title || ''} variant="deep" onChange={(v) => { const a = [...currentData.features]; a[i] = { ...a[i], title: v }; updateField('key_features', 'features', a); }} />
+                        <AdminTextarea label="Description" value={feat.description || ''} variant="deep" onChange={(v) => { const a = [...currentData.features]; a[i] = { ...a[i], description: v }; updateField('key_features', 'features', a); }} />
+                      </AdminCard>
                     ))}
                   </div>
                 </div>
               </div>
             )}
 
-            {/* SERVICES FORM BUILDER */}
+            {/* ═══ SERVICES ═══ */}
             {activeSection === 'services' && (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                    <input
-                      type="text"
-                      value={currentData.badge || ''}
-                      onChange={(e) => updateField('services', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Main</label>
-                    <input
-                      type="text"
-                      value={currentData.title || ''}
-                      onChange={(e) => updateField('services', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Accent</label>
-                    <input
-                      type="text"
-                      value={currentData.titleAccent || ''}
-                      onChange={(e) => updateField('services', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Description</label>
-                    <input
-                      type="text"
-                      value={currentData.description || ''}
-                      onChange={(e) => updateField('services', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                </div>
-
+                <SectionFields section="services" data={currentData} updateField={updateField} />
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Service Offerings</h4>
+                  <SectionHeader title="Service Offerings" count={(currentData.servicesList || []).length} addLabel="Add Service" onAdd={() => updateField('services', 'servicesList', [...(currentData.servicesList || []), { title: '', description: '', badge: '', icon: 'Clock' }])} />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {(currentData.servicesList || []).map((srv: any, index: number) => (
-                      <div key={index} className="bg-white/3 p-4 rounded-xl border border-white/5 space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-xs font-bold text-accent">Service #{index + 1}</span>
-                          <input
-                            type="text"
-                            value={srv.badge || ''}
-                            placeholder="Badge (e.g. Popular)"
-                            onChange={(e) => {
-                              const newSrv = [...currentData.servicesList];
-                              newSrv[index] = { ...newSrv[index], badge: e.target.value };
-                              updateField('services', 'servicesList', newSrv);
-                            }}
-                            className="bg-accent/10 border border-accent/20 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest text-accent text-center focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Service Title</label>
-                          <input
-                            type="text"
-                            value={srv.title || ''}
-                            onChange={(e) => {
-                              const newSrv = [...currentData.servicesList];
-                              newSrv[index] = { ...newSrv[index], title: e.target.value };
-                              updateField('services', 'servicesList', newSrv);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Service Description</label>
-                          <textarea
-                            rows={3}
-                            value={srv.description || ''}
-                            onChange={(e) => {
-                              const newSrv = [...currentData.servicesList];
-                              newSrv[index] = { ...newSrv[index], description: e.target.value };
-                              updateField('services', 'servicesList', newSrv);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-xs focus:outline-none animate-none"
-                          />
-                        </div>
-                      </div>
+                    {(currentData.servicesList || []).map((srv: any, i: number) => (
+                      <AdminCard key={i} label="Service" index={i} onDelete={() => { const a = [...currentData.servicesList]; a.splice(i, 1); updateField('services', 'servicesList', a); }}>
+                        <AdminSelect label="Icon" value={srv.icon || 'Clock'} onChange={(v) => { const a = [...currentData.servicesList]; a[i] = { ...a[i], icon: v }; updateField('services', 'servicesList', a); }} options={['Clock','Monitor','Zap','FileSearch','Users','Globe','Shield','Camera','Lock','Target','Activity','Bell']} />
+                        <AdminInput label="Service Title" value={srv.title || ''} variant="deep" onChange={(v) => { const a = [...currentData.servicesList]; a[i] = { ...a[i], title: v }; updateField('services', 'servicesList', a); }} />
+                        <AdminTextarea label="Service Description" value={srv.description || ''} variant="deep" onChange={(v) => { const a = [...currentData.servicesList]; a[i] = { ...a[i], description: v }; updateField('services', 'servicesList', a); }} />
+                      </AdminCard>
                     ))}
                   </div>
                 </div>
               </div>
             )}
 
-            {/* INDUSTRIES FORM BUILDER */}
+            {/* ═══ INDUSTRIES ═══ */}
             {activeSection === 'industries' && (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                    <input
-                      type="text"
-                      value={currentData.badge || ''}
-                      onChange={(e) => updateField('industries', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Main</label>
-                    <input
-                      type="text"
-                      value={currentData.title || ''}
-                      onChange={(e) => updateField('industries', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Accent</label>
-                    <input
-                      type="text"
-                      value={currentData.titleAccent || ''}
-                      onChange={(e) => updateField('industries', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Description</label>
-                    <input
-                      type="text"
-                      value={currentData.description || ''}
-                      onChange={(e) => updateField('industries', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                </div>
-
+                <SectionFields section="industries" data={currentData} updateField={updateField} />
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Industries (4 Categories)</h4>
+                  <SectionHeader title="Industries" count={(currentData.industriesList || []).length} unit="Categories" addLabel="Add Industry" onAdd={() => updateField('industries', 'industriesList', [...(currentData.industriesList || []), { name: '', description: '', icon: 'Briefcase' }])} />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {(currentData.industriesList || []).map((ind: any, index: number) => (
-                      <div key={index} className="bg-white/3 p-4 rounded-xl border border-white/5 space-y-3">
-                        <span className="text-xs font-bold text-accent">Industry #{index + 1}</span>
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Sector Name</label>
-                          <input
-                            type="text"
-                            value={ind.name || ''}
-                            onChange={(e) => {
-                              const newInd = [...currentData.industriesList];
-                              newInd[index] = { ...newInd[index], name: e.target.value };
-                              updateField('industries', 'industriesList', newInd);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Coverage Details</label>
-                          <textarea
-                            rows={3}
-                            value={ind.description || ''}
-                            onChange={(e) => {
-                              const newInd = [...currentData.industriesList];
-                              newInd[index] = { ...newInd[index], description: e.target.value };
-                              updateField('industries', 'industriesList', newInd);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-xs focus:outline-none"
-                          />
-                        </div>
-                      </div>
+                    {(currentData.industriesList || []).map((ind: any, i: number) => (
+                      <AdminCard key={i} label="Industry" index={i} onDelete={() => { const a = [...currentData.industriesList]; a.splice(i, 1); updateField('industries', 'industriesList', a); }}>
+                        <AdminSelect label="Icon" value={ind.icon || 'Briefcase'} onChange={(v) => { const a = [...currentData.industriesList]; a[i] = { ...a[i], icon: v }; updateField('industries', 'industriesList', a); }} options={['Briefcase','Store','Warehouse','Building2','Shield','Home','Zap','Construction','ShieldAlert']} />
+                        <AdminInput label="Sector Name" value={ind.name || ''} variant="deep" onChange={(v) => { const a = [...currentData.industriesList]; a[i] = { ...a[i], name: v }; updateField('industries', 'industriesList', a); }} />
+                        <AdminTextarea label="Coverage Details" value={ind.description || ''} variant="deep" onChange={(v) => { const a = [...currentData.industriesList]; a[i] = { ...a[i], description: v }; updateField('industries', 'industriesList', a); }} />
+                      </AdminCard>
                     ))}
                   </div>
                 </div>
               </div>
             )}
 
-            {/* PRICING FORM BUILDER */}
+            {/* ═══ PRICING ═══ */}
             {activeSection === 'pricing' && (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                    <input
-                      type="text"
-                      value={currentData.badge || ''}
-                      onChange={(e) => updateField('pricing', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Main</label>
-                    <input
-                      type="text"
-                      value={currentData.title || ''}
-                      onChange={(e) => updateField('pricing', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Accent</label>
-                    <input
-                      type="text"
-                      value={currentData.titleAccent || ''}
-                      onChange={(e) => updateField('pricing', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Description</label>
-                    <input
-                      type="text"
-                      value={currentData.description || ''}
-                      onChange={(e) => updateField('pricing', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                </div>
-
+                <SectionFields section="pricing" data={currentData} updateField={updateField} />
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-6">Investment Packages</h4>
+                  <SectionHeader title="Investment Packages" count={(currentData.plans || []).length} addLabel="Add Plan" onAdd={() => updateField('pricing', 'plans', [...(currentData.plans || []), { title: '', price: '', description: '', features: [''], highlight: false }])} />
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                    {(currentData.plans || []).map((plan: any, index: number) => (
-                      <div key={index} className={`p-5 rounded-xl border ${plan.highlight ? 'bg-accent/5 border-accent' : 'bg-white/3 border-white/5'} space-y-4`}>
+                    {(currentData.plans || []).map((plan: any, i: number) => (
+                      <div key={i} className={`p-5 rounded-xl border ${plan.highlight ? 'bg-accent/5 border-accent' : 'bg-white/3 border-white/5'} space-y-4`}>
                         <div className="flex justify-between items-center border-b border-white/5 pb-4">
                           <span className="text-md font-bold">{plan.title}</span>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const newPlans = [...currentData.plans];
-                              newPlans.forEach((p, idx) => {
-                                p.highlight = idx === index ? !p.highlight : false;
-                              });
-                              updateField('pricing', 'plans', newPlans);
-                            }}
-                            className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
-                              plan.highlight
-                                ? 'bg-accent text-primary-dark shadow-md shadow-accent/20'
-                                : 'bg-white/5 text-white/40 hover:bg-white/10'
-                            }`}
-                          >
-                            {plan.highlight ? '★ Recommended' : 'Set Recommended'}
-                          </button>
+                          <div className="flex items-center space-x-2">
+                            <AdminButton variant="pill" onClick={() => { const a = [...currentData.plans]; a.forEach((p: any, idx: number) => { p.highlight = idx === i ? !p.highlight : false; }); updateField('pricing', 'plans', a); }} className={plan.highlight ? 'bg-accent text-primary-dark shadow-md shadow-accent/20' : 'bg-white/5 text-white/40 hover:bg-white/10'}>
+                              {plan.highlight ? '★ Recommended' : 'Set Recommended'}
+                            </AdminButton>
+                            <DeleteButton onClick={() => { const a = [...currentData.plans]; a.splice(i, 1); updateField('pricing', 'plans', a); }} groupName="card" size={11} />
+                          </div>
                         </div>
-
                         <div className="grid grid-cols-2 gap-6">
-                          <div>
-                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Plan Title</label>
-                            <input
-                              type="text"
-                              value={plan.title || ''}
-                              onChange={(e) => {
-                                const newPlans = [...currentData.plans];
-                                newPlans[index] = { ...newPlans[index], title: e.target.value };
-                                updateField('pricing', 'plans', newPlans);
-                              }}
-                              className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Price Value ($ /mo or 'Custom')</label>
-                            <input
-                              type="text"
-                              value={plan.price || ''}
-                              onChange={(e) => {
-                                const newPlans = [...currentData.plans];
-                                newPlans[index] = { ...newPlans[index], price: e.target.value };
-                                updateField('pricing', 'plans', newPlans);
-                              }}
-                              className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none"
-                            />
-                          </div>
+                          <AdminInput label="Plan Title" value={plan.title || ''} variant="deep" onChange={(v) => { const a = [...currentData.plans]; a[i] = { ...a[i], title: v }; updateField('pricing', 'plans', a); }} />
+                          <AdminInput label="Price Value" value={plan.price || ''} variant="deep" onChange={(v) => { const a = [...currentData.plans]; a[i] = { ...a[i], price: v }; updateField('pricing', 'plans', a); }} />
                         </div>
-
+                        <AdminTextarea label="Brief Description" value={plan.description || ''} variant="deep" rows={2} onChange={(v) => { const a = [...currentData.plans]; a[i] = { ...a[i], description: v }; updateField('pricing', 'plans', a); }} />
                         <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Brief Description</label>
-                          <textarea
-                            rows={2}
-                            value={plan.description || ''}
-                            onChange={(e) => {
-                              const newPlans = [...currentData.plans];
-                              newPlans[index] = { ...newPlans[index], description: e.target.value };
-                              updateField('pricing', 'plans', newPlans);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-xs focus:outline-none"
-                          />
-                        </div>
-
-                        {/* Pricing Features Sub-list */}
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-3">Included Features List</label>
+                          <div className="flex justify-between items-center mb-3">
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/30">Included Features</label>
+                            <AdminButton variant="accentSmall" onClick={() => { const a = [...currentData.plans]; a[i] = { ...a[i], features: [...(a[i].features || []), ''] }; updateField('pricing', 'plans', a); }}>
+                              <Plus size={10} /><span>Add</span>
+                            </AdminButton>
+                          </div>
                           <div className="space-y-2">
-                            {(plan.features || []).map((feature: string, fIndex: number) => (
-                              <div key={fIndex} className="flex items-center space-x-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-accent"></span>
-                                <input
-                                  type="text"
-                                  value={feature}
-                                  onChange={(e) => {
-                                    const newPlans = [...currentData.plans];
-                                    const newFeats = [...newPlans[index].features];
-                                    newFeats[fIndex] = e.target.value;
-                                    newPlans[index] = { ...newPlans[index], features: newFeats };
-                                    updateField('pricing', 'plans', newPlans);
-                                  }}
-                                  className="flex-grow bg-black/10 hover:bg-black/20 border border-white/5 rounded-lg p-2 text-white text-xs focus:outline-none"
-                                />
-                              </div>
+                            {(plan.features || []).map((feature: string, fi: number) => (
+                              <FeatureListRow key={fi} value={feature} onChange={(v) => { const a = [...currentData.plans]; const f = [...a[i].features]; f[fi] = v; a[i] = { ...a[i], features: f }; updateField('pricing', 'plans', a); }} onDelete={() => { const a = [...currentData.plans]; const f = [...a[i].features]; f.splice(fi, 1); a[i] = { ...a[i], features: f }; updateField('pricing', 'plans', a); }} groupName={`feat-${i}-${fi}`} />
                             ))}
                           </div>
                         </div>
@@ -900,208 +569,127 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            {/* COLLABORATION FORM BUILDER */}
+            {/* ═══ COLLABORATION ═══ */}
             {activeSection === 'collaboration' && (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                    <input
-                      type="text"
-                      value={currentData.badge || ''}
-                      onChange={(e) => updateField('collaboration', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Main</label>
-                    <input
-                      type="text"
-                      value={currentData.title || ''}
-                      onChange={(e) => updateField('collaboration', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Accent</label>
-                    <input
-                      type="text"
-                      value={currentData.titleAccent || ''}
-                      onChange={(e) => updateField('collaboration', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Description</label>
-                    <textarea
-                      rows={3}
-                      value={currentData.description || ''}
-                      onChange={(e) => updateField('collaboration', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                </div>
-
+                <SectionFields section="collaboration" data={currentData} updateField={updateField} descriptionAsTextarea />
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-4">Operations Guidelines (4 Points)</h4>
+                  <SectionHeader title="Operations Guidelines" count={(currentData.points || []).length} addLabel="Add Point" onAdd={() => updateField('collaboration', 'points', [...(currentData.points || []), ''])} />
                   <div className="space-y-4">
-                    {(currentData.points || []).map((pt: string, index: number) => (
-                      <div key={index} className="flex items-center space-x-3 bg-white/3 p-3 rounded-xl border border-white/5">
-                        <span className="text-xs font-bold text-accent shrink-0 w-8 text-center">#{index + 1}</span>
-                        <input
-                          type="text"
-                          value={pt}
-                          onChange={(e) => {
-                            const newPoints = [...currentData.points];
-                            newPoints[index] = e.target.value;
-                            updateField('collaboration', 'points', newPoints);
-                          }}
-                          className="flex-grow bg-black/20 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none"
-                        />
-                      </div>
+                    {(currentData.points || []).map((pt: string, i: number) => (
+                      <ListItemRow key={i} value={pt} index={i} onChange={(v) => { const a = [...currentData.points]; a[i] = v; updateField('collaboration', 'points', a); }} onDelete={() => { const a = [...currentData.points]; a.splice(i, 1); updateField('collaboration', 'points', a); }} />
                     ))}
                   </div>
                 </div>
               </div>
             )}
 
-            {/* FAQ FORM BUILDER */}
+            {/* ═══ FAQ ═══ */}
             {activeSection === 'faq' && (
               <div className="space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                    <input
-                      type="text"
-                      value={currentData.badge || ''}
-                      onChange={(e) => updateField('faq', 'badge', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Main</label>
-                    <input
-                      type="text"
-                      value={currentData.title || ''}
-                      onChange={(e) => updateField('faq', 'title', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Title Accent</label>
-                    <input
-                      type="text"
-                      value={currentData.titleAccent || ''}
-                      onChange={(e) => updateField('faq', 'titleAccent', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                  <div className="md:col-span-3">
-                    <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Description</label>
-                    <input
-                      type="text"
-                      value={currentData.description || ''}
-                      onChange={(e) => updateField('faq', 'description', e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                    />
-                  </div>
-                </div>
-
+                <SectionFields section="faq" data={currentData} updateField={updateField} />
                 <div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-6">FAQ Q&A List</h4>
+                  <SectionHeader title="FAQ Q&A List" count={(currentData.faqsList || []).length} addLabel="Add FAQ" onAdd={() => updateField('faq', 'faqsList', [...(currentData.faqsList || []), { question: '', answer: '' }])} />
                   <div className="space-y-6">
-                    {(currentData.faqsList || []).map((faq: any, index: number) => (
-                      <div key={index} className="bg-white/3 p-4 rounded-xl border border-white/5 space-y-3">
-                        <span className="text-xs font-bold text-accent">Question #{index + 1}</span>
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Question Text</label>
-                          <input
-                            type="text"
-                            value={faq.question || ''}
-                            onChange={(e) => {
-                              const newFaq = [...currentData.faqsList];
-                              newFaq[index] = { ...newFaq[index], question: e.target.value };
-                              updateField('faq', 'faqsList', newFaq);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-sm focus:outline-none"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2">Answer Explanation</label>
-                          <textarea
-                            rows={3}
-                            value={faq.answer || ''}
-                            onChange={(e) => {
-                              const newFaq = [...currentData.faqsList];
-                              newFaq[index] = { ...newFaq[index], answer: e.target.value };
-                              updateField('faq', 'faqsList', newFaq);
-                            }}
-                            className="w-full bg-black/20 border border-white/10 rounded-xl p-3 text-white text-xs focus:outline-none"
-                          />
-                        </div>
-                      </div>
+                    {(currentData.faqsList || []).map((faq: any, i: number) => (
+                      <AdminCard key={i} label="Question" index={i} onDelete={() => { const a = [...currentData.faqsList]; a.splice(i, 1); updateField('faq', 'faqsList', a); }}>
+                        <AdminInput label="Question Text" value={faq.question || ''} variant="deep" onChange={(v) => { const a = [...currentData.faqsList]; a[i] = { ...a[i], question: v }; updateField('faq', 'faqsList', a); }} />
+                        <AdminTextarea label="Answer Explanation" value={faq.answer || ''} variant="deep" onChange={(v) => { const a = [...currentData.faqsList]; a[i] = { ...a[i], answer: v }; updateField('faq', 'faqsList', a); }} />
+                      </AdminCard>
                     ))}
                   </div>
                 </div>
               </div>
             )}
 
-            {/* CEO MESSAGE FORM BUILDER */}
+            {/* ═══ CEO MESSAGE ═══ */}
             {activeSection === 'ceo_section' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Section Badge</label>
-                  <input
-                    type="text"
-                    value={currentData.badge || ''}
-                    onChange={(e) => updateField('ceo_section', 'badge', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
-                  />
+                <AdminInput label="Section Badge" value={currentData.badge || ''} onChange={(v) => updateField('ceo_section', 'badge', v)} />
+                <AdminInput label="Header Title" value={currentData.title || ''} onChange={(v) => updateField('ceo_section', 'title', v)} />
+                <AdminTextarea label="CEO Quote (Message block)" value={currentData.quote || ''} onChange={(v) => updateField('ceo_section', 'quote', v)} rows={4} className="md:col-span-2" />
+                <AdminInput label="CEO Full Name" value={currentData.ceoName || ''} onChange={(v) => updateField('ceo_section', 'ceoName', v)} />
+                <AdminInput label="CEO Role / Title" value={currentData.ceoRole || ''} onChange={(v) => updateField('ceo_section', 'ceoRole', v)} />
+                <AdminInput label="Signature Text" value={currentData.signatureText || ''} onChange={(v) => updateField('ceo_section', 'signatureText', v)} className="md:col-span-2" />
+                <AdminImageUpload label="CEO Image File" value={currentData.imageUrl || ''} onChange={(v) => updateField('ceo_section', 'imageUrl', v)} className="md:col-span-2" />
+              </div>
+            )}
+
+            {/* ═══ FOOTER SETTINGS ═══ */}
+            {activeSection === 'footer' && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <AdminTextarea label="Brand Description" value={currentData.description || ''} onChange={(v) => updateField('footer', 'description', v)} rows={3} />
+                  <div className="space-y-4">
+                    <AdminInput label="Badge One" value={currentData.badge || ''} onChange={(v) => updateField('footer', 'badge', v)} />
+                    <AdminInput label="Badge Two" value={currentData.badge2 || ''} onChange={(v) => updateField('footer', 'badge2', v)} />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Header Title</label>
-                  <input
-                    type="text"
-                    value={currentData.title || ''}
-                    onChange={(e) => updateField('ceo_section', 'title', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none focus:border-accent/40"
-                  />
+
+                <div className="bg-white/3 rounded-xl p-4 border border-white/5 space-y-4">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Contact Details</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <AdminInput label="Phone 1" value={currentData.phone1 || ''} variant="deep" onChange={(v) => updateField('footer', 'phone1', v)} />
+                    <AdminInput label="Phone 2" value={currentData.phone2 || ''} variant="deep" onChange={(v) => updateField('footer', 'phone2', v)} />
+                    <AdminInput label="Email 1" value={currentData.email1 || ''} variant="deep" onChange={(v) => updateField('footer', 'email1', v)} />
+                    <AdminInput label="Email 2" value={currentData.email2 || ''} variant="deep" onChange={(v) => updateField('footer', 'email2', v)} />
+                    <AdminInput label="Website Label" value={currentData.website || ''} variant="deep" onChange={(v) => updateField('footer', 'website', v)} />
+                    <AdminInput label="Website URL" value={currentData.websiteUrl || ''} variant="deep" onChange={(v) => updateField('footer', 'websiteUrl', v)} />
+                  </div>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">CEO Quote (Message block)</label>
-                  <textarea
-                    rows={4}
-                    value={currentData.quote || ''}
-                    onChange={(e) => updateField('ceo_section', 'quote', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none focus:border-accent/40 resize-y"
-                  />
+
+                <div className="bg-white/3 rounded-xl p-4 border border-white/5 space-y-4">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Headquarters</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <AdminTextarea label="Address" value={currentData.address || ''} variant="deep" onChange={(v) => updateField('footer', 'address', v)} rows={3} className="md:col-span-2" />
+                    <AdminInput label="Working Hours" value={currentData.hours || ''} variant="deep" onChange={(v) => updateField('footer', 'hours', v)} />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">CEO Full Name</label>
-                  <input
-                    type="text"
-                    value={currentData.ceoName || ''}
-                    onChange={(e) => updateField('ceo_section', 'ceoName', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                  />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Quick Links Section */}
+                  <div>
+                    <SectionHeader title="Quick Links" count={(currentData.quickLinks || []).length} addLabel="Add Link" size="compact" onAdd={() => updateField('footer', 'quickLinks', [...(currentData.quickLinks || []), { label: '', url: '' }])} />
+                    <div className="space-y-3">
+                      {(currentData.quickLinks || []).map((link: any, i: number) => (
+                        <div key={i} className="flex items-center space-x-3 bg-white/3 p-3 rounded-xl border border-white/5 group/link">
+                          <AdminInput label="Label" value={link.label || ''} variant="deep" onChange={(v) => { const a = [...currentData.quickLinks]; a[i] = { ...a[i], label: v }; updateField('footer', 'quickLinks', a); }} className="flex-1" />
+                          <AdminInput label="URL" value={link.url || ''} variant="deep" onChange={(v) => { const a = [...currentData.quickLinks]; a[i] = { ...a[i], url: v }; updateField('footer', 'quickLinks', a); }} className="flex-1" />
+                          <div className="self-end pb-2">
+                            <DeleteButton onClick={() => { const a = [...currentData.quickLinks]; a.splice(i, 1); updateField('footer', 'quickLinks', a); }} groupName="link" size={11} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Social Links Section */}
+                  <div>
+                    <SectionHeader title="Social Links" count={(currentData.socialLinks || []).length} addLabel="Add Social" size="compact" onAdd={() => updateField('footer', 'socialLinks', [...(currentData.socialLinks || []), { platform: 'facebook', url: '' }])} />
+                    <div className="space-y-3">
+                      {(currentData.socialLinks || []).map((social: any, i: number) => (
+                        <div key={i} className="flex items-center space-x-3 bg-white/3 p-3 rounded-xl border border-white/5 group/social">
+                          <AdminSelect label="Platform" value={social.platform || 'facebook'} onChange={(v) => { const a = [...currentData.socialLinks]; a[i] = { ...a[i], platform: v }; updateField('footer', 'socialLinks', a); }} options={['facebook', 'twitter', 'linkedin']} className="w-1/3" />
+                          <AdminInput label="URL" value={social.url || ''} variant="deep" onChange={(v) => { const a = [...currentData.socialLinks]; a[i] = { ...a[i], url: v }; updateField('footer', 'socialLinks', a); }} className="flex-grow" />
+                          <div className="self-end pb-2">
+                            <DeleteButton onClick={() => { const a = [...currentData.socialLinks]; a.splice(i, 1); updateField('footer', 'socialLinks', a); }} groupName="social" size={11} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">CEO Role / Title</label>
-                  <input
-                    type="text"
-                    value={currentData.ceoRole || ''}
-                    onChange={(e) => updateField('ceo_section', 'ceoRole', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white text-sm focus:outline-none"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-xs font-black uppercase tracking-widest text-white/40 mb-2">Signature Text</label>
-                  <input
-                    type="text"
-                    value={currentData.signatureText || ''}
-                    onChange={(e) => updateField('ceo_section', 'signatureText', e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:outline-none"
-                  />
+
+                <div className="bg-white/3 rounded-xl p-4 border border-white/5 space-y-4">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent">Bottom Bar Info</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <AdminInput label="Copyright Text" value={currentData.copyright || ''} variant="deep" onChange={(v) => updateField('footer', 'copyright', v)} />
+                    <AdminInput label="Credit Text" value={currentData.credit || ''} variant="deep" onChange={(v) => updateField('footer', 'credit', v)} />
+                    <AdminInput label="Status Text" value={currentData.statusLabel || ''} variant="deep" onChange={(v) => updateField('footer', 'statusLabel', v)} />
+                    <AdminInput label="Status Link" value={currentData.statusUrl || ''} variant="deep" onChange={(v) => updateField('footer', 'statusUrl', v)} />
+                    <AdminInput label="System Log Text" value={currentData.systemLogLabel || ''} variant="deep" onChange={(v) => updateField('footer', 'systemLogLabel', v)} />
+                    <AdminInput label="System Log Link" value={currentData.systemLogUrl || ''} variant="deep" onChange={(v) => updateField('footer', 'systemLogUrl', v)} />
+                  </div>
                 </div>
               </div>
             )}
@@ -1109,7 +697,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Footer info */}
-        <footer className="mt-6 pt-4 border-t border-white/5 text-center text-[10px] text-white/20">
+        <footer className="mt-6 pt-4 text-center text-[10px]" style={{ borderTop: '1px solid var(--admin-border)', color: 'var(--admin-text-faint)' }}>
           <span>Secure Watch 24 Services Admin Console • Connected via Prisma Client to MongoDB Cluster</span>
         </footer>
       </main>

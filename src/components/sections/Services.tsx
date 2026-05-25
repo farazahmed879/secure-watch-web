@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Monitor, FileSearch, Users, Clock, Shield, Globe, Zap } from 'lucide-react';
+import { Monitor, FileSearch, Users, Clock, Shield, Globe, Zap, Camera, Lock, Target, Activity, Bell } from 'lucide-react';
 
 const SERVICES = [
   {
@@ -76,16 +76,38 @@ const Services = ({ data }: { data?: any }) => {
     }
   ];
 
-  const getServiceIcon = (idx: number) => {
-    const icons = [
-      <Clock size={32} key="clock" />, 
-      <Monitor size={32} key="monitor" />, 
-      <Zap size={32} key="zap" />, 
-      <FileSearch size={32} key="search" />, 
-      <Users size={32} key="users" />, 
-      <Globe size={32} key="globe" />
-    ];
-    return icons[idx % icons.length];
+  const getServiceIcon = (service: any, idx: number) => {
+    const iconName = service.icon?.toLowerCase();
+    switch (iconName) {
+      case 'clock': return <Clock size={32} key="clock" />;
+      case 'monitor': return <Monitor size={32} key="monitor" />;
+      case 'zap': return <Zap size={32} key="zap" />;
+      case 'filesearch': return <FileSearch size={32} key="search" />;
+      case 'users': return <Users size={32} key="users" />;
+      case 'globe': return <Globe size={32} key="globe" />;
+      case 'shield': return <Shield size={32} key="shield" />;
+      case 'camera': return <Camera size={32} key="camera" />;
+      case 'lock': return <Lock size={32} key="lock" />;
+      case 'target': return <Target size={32} key="target" />;
+      case 'activity': return <Activity size={32} key="activity" />;
+      case 'bell': return <Bell size={32} key="bell" />;
+      default:
+        const fallbackIcons = [
+          <Clock size={32} key="clock" />,
+          <Monitor size={32} key="monitor" />,
+          <Zap size={32} key="zap" />,
+          <FileSearch size={32} key="search" />,
+          <Users size={32} key="users" />,
+          <Globe size={32} key="globe" />
+        ];
+        return fallbackIcons[idx % fallbackIcons.length];
+    }
+  };
+
+  const getGridCols = (count: number) => {
+    if (count <= 1) return 'grid-cols-1';
+    if (count === 2) return 'grid-cols-1 md:grid-cols-2';
+    return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   };
 
   return (
@@ -122,7 +144,7 @@ const Services = ({ data }: { data?: any }) => {
            </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className={`grid ${getGridCols(servicesList.length)} gap-8`}>
           {servicesList.map((service: any, index: number) => (
             <motion.div
               key={index}
@@ -136,7 +158,7 @@ const Services = ({ data }: { data?: any }) => {
               
               <div className="glass p-10 rounded-[2.5rem] border-white/5 group-hover:border-accent/30 transition-all duration-500 h-full flex flex-col items-start card-hover">
                 <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-8 text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-500 group-hover:-rotate-6">
-                  {getServiceIcon(index)}
+                  {getServiceIcon(service, index)}
                 </div>
                 <div className="flex justify-between items-center w-full mb-4">
                   <h3 className="text-2xl font-black text-white group-hover:text-accent transition-colors">{service.title}</h3>

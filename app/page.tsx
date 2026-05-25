@@ -48,7 +48,7 @@ export default function Home() {
       <Collaboration data={sectionsData?.collaboration} />
       <FAQ data={sectionsData?.faq} />
       <CEOSection data={sectionsData?.ceo_section} />
-      <Footer />
+      <Footer data={sectionsData?.footer} />
     </main>
   );
 }

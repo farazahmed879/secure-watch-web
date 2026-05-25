@@ -161,3 +161,176 @@
   scrollbar-color: rgba(34, 211, 238, 0.15) transparent;
 }
 
+/* ── Admin Panel Theme System ── */
+[data-admin-theme="dark"] {
+  --admin-bg: #020617;
+  --admin-sidebar: rgba(0, 0, 0, 0.3);
+  --admin-surface: rgba(255, 255, 255, 0.01);
+  --admin-card: rgba(255, 255, 255, 0.03);
+  --admin-input: rgba(255, 255, 255, 0.05);
+  --admin-input-focus: rgba(255, 255, 255, 0.08);
+  --admin-input-deep: rgba(0, 0, 0, 0.2);
+  --admin-border: rgba(255, 255, 255, 0.05);
+  --admin-border-hover: rgba(255, 255, 255, 0.1);
+  --admin-text: #ffffff;
+  --admin-text-secondary: rgba(255, 255, 255, 0.7);
+  --admin-text-muted: rgba(255, 255, 255, 0.4);
+  --admin-text-faint: rgba(255, 255, 255, 0.2);
+  --admin-text-label: rgba(255, 255, 255, 0.3);
+  --admin-nav-hover: rgba(255, 255, 255, 0.05);
+  --admin-nav-text: rgba(255, 255, 255, 0.5);
+  --admin-footer-text: rgba(255, 255, 255, 0.2);
+  --admin-stat-bg: rgba(255, 255, 255, 0.05);
+}
+
+[data-admin-theme="light"] {
+  --admin-bg: #f1f5f9;
+  --admin-sidebar: #ffffff;
+  --admin-surface: #ffffff;
+  --admin-card: #f8fafc;
+  --admin-input: #f1f5f9;
+  --admin-input-focus: #e2e8f0;
+  --admin-input-deep: #e2e8f0;
+  --admin-border: #e2e8f0;
+  --admin-border-hover: #cbd5e1;
+  --admin-text: #0f172a;
+  --admin-text-secondary: #334155;
+  --admin-text-muted: #64748b;
+  --admin-text-faint: #94a3b8;
+  --admin-text-label: #64748b;
+  --admin-nav-hover: #f1f5f9;
+  --admin-nav-text: #64748b;
+  --admin-footer-text: #94a3b8;
+  --admin-stat-bg: #f1f5f9;
+}
+
+/* Admin theme overrides — Light Mode */
+
+/* ── Root wrapper ── */
+[data-admin-theme="light"].admin-panel {
+  color: #0f172a;
+}
+
+/* ── Glass panels ── */
+[data-admin-theme="light"] .glass {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  backdrop-filter: none !important;
+}
+
+/* ── All form controls ── */
+[data-admin-theme="light"] input,
+[data-admin-theme="light"] textarea,
+[data-admin-theme="light"] select {
+  background-color: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-admin-theme="light"] input::placeholder,
+[data-admin-theme="light"] textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+[data-admin-theme="light"] input:focus,
+[data-admin-theme="light"] textarea:focus,
+[data-admin-theme="light"] select:focus {
+  border-color: #22d3ee !important;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.15) !important;
+}
+
+[data-admin-theme="light"] option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* ── Headings ── */
+[data-admin-theme="light"] h1,
+[data-admin-theme="light"] h2,
+[data-admin-theme="light"] h3,
+[data-admin-theme="light"] h4 {
+  color: #0f172a !important;
+}
+
+/* ── Accent text (keep teal but darker for light bg) ── */
+[data-admin-theme="light"] .text-accent {
+  color: #0891b2 !important;
+}
+
+/* ── Labels ── */
+[data-admin-theme="light"] label {
+  color: #64748b !important;
+}
+
+/* ── White-alpha backgrounds → light surfaces ── */
+[data-admin-theme="light"] [class*="bg-white/"] {
+  background-color: #f1f5f9 !important;
+}
+
+[data-admin-theme="light"] [class*="bg-black/"] {
+  background-color: #e2e8f0 !important;
+}
+
+/* ── White-alpha text → dark text ── */
+[data-admin-theme="light"] [class*="text-white/"] {
+  color: #64748b !important;
+}
+
+[data-admin-theme="light"] .text-white:not([class*="text-white/"]) {
+  color: #0f172a !important;
+}
+
+/* ── White-alpha borders → light borders ── */
+[data-admin-theme="light"] [class*="border-white/"] {
+  border-color: #e2e8f0 !important;
+}
+
+/* ── Accent backgrounds & borders ── */
+[data-admin-theme="light"] .bg-accent {
+  background-color: #0891b2 !important;
+}
+
+[data-admin-theme="light"] [class*="bg-accent/"] {
+  background-color: rgba(8, 145, 178, 0.1) !important;
+}
+
+[data-admin-theme="light"] [class*="border-accent/"] {
+  border-color: rgba(8, 145, 178, 0.25) !important;
+}
+
+/* ── Shadows ── */
+[data-admin-theme="light"] [class*="shadow-xl"],
+[data-admin-theme="light"] [class*="shadow-md"] {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* ── Red/delete buttons ── */
+[data-admin-theme="light"] .text-red-400 {
+  color: #ef4444 !important;
+}
+
+[data-admin-theme="light"] [class*="bg-red-500/"] {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+}
+
+[data-admin-theme="light"] [class*="border-red-500/"] {
+  border-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+/* ── Bold/black spans (plan titles, stat values) ── */
+[data-admin-theme="light"] span.font-bold,
+[data-admin-theme="light"] span.font-black {
+  color: #0f172a !important;
+}
+
+/* ── Active nav keeps its dark text on accent bg ── */
+[data-admin-theme="light"] .bg-accent.text-primary-dark {
+  color: #020617 !important;
+}
+
+/* ── Brand name in sidebar ── */
+[data-admin-theme="light"] .tracking-tight {
+  color: #0f172a !important;
+}
+
+
