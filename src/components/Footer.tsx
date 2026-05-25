@@ -4,7 +4,51 @@ import React from 'react';
 import Image from 'next/image';
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Shield, ExternalLink, Globe, Clock } from 'lucide-react';
 
-const Footer = () => {
+const Footer = ({ data }: { data?: any }) => {
+  const description = data?.description || 'Secure Watch 24 Services is committed to delivering reliable security monitoring solutions that help businesses and individuals stay protected 24/7.';
+  const badge = data?.badge || 'Always Watching. Always Protecting.';
+  const badge2 = data?.badge2 || 'Your Security, Our Priority.';
+  
+  const socialLinks = data?.socialLinks || [
+    { platform: 'facebook', url: '#' },
+    { platform: 'twitter', url: '#' },
+    { platform: 'linkedin', url: 'https://linkedin.com/in/muzaffarali1493' }
+  ];
+
+  const quickLinks = data?.quickLinks || [
+    { label: 'About Us', url: '#about' },
+    { label: 'Services', url: '#services' },
+    { label: 'Industries', url: '#industries' },
+    { label: 'Pricing Plans', url: '#pricing' },
+    { label: 'FAQs', url: '#faq' }
+  ];
+
+  const phone1 = data?.phone1 || '+92 309 8344704';
+  const phone2 = data?.phone2 || '+92 344 2553858';
+  const email1 = data?.email1 || 'contact@sw24services.com';
+  const email2 = data?.email2 || 'securewatch24services@gmail.com';
+  const website = data?.website || 'www.sw24services.com';
+  const websiteUrl = data?.websiteUrl || 'http://www.sw24services.com';
+
+  const address = data?.address || 'Office No D-35, 2nd Floor,\nShahrah-e-Faisal,\nKarachi, Pakistan';
+  const hours = data?.hours || '24/7 — Monday to Sunday';
+
+  const copyright = data?.copyright || `© ${new Date().getFullYear()} SECURE WATCH. MISSION CRITICAL PROTECTION.`;
+  const credit = data?.credit || 'Created by Alpha Crime Control Partnership';
+  const statusLabel = data?.statusLabel || 'Status: Online';
+  const statusUrl = data?.statusUrl || '#';
+  const systemLogLabel = data?.systemLogLabel || 'System Log';
+  const systemLogUrl = data?.systemLogUrl || '#';
+
+  const getSocialIcon = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case 'facebook': return <Facebook size={18} />;
+      case 'twitter': return <Twitter size={18} />;
+      case 'linkedin': return <Linkedin size={18} />;
+      default: return <Facebook size={18} />;
+    }
+  };
+
   return (
     <footer id="contact" className="relative pt-32 pb-16 bg-primary-dark overflow-hidden">
       {/* Top border gradient */}
@@ -22,80 +66,92 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-white/40 text-sm leading-relaxed max-w-xs font-semibold italic">
-              Secure Watch 24 Services is committed to delivering reliable security monitoring solutions that help businesses and individuals stay protected 24/7.
+              {description}
             </p>
             <div className="space-y-2">
-               <p className="text-xs font-black text-accent uppercase tracking-widest">Always Watching. Always Protecting.</p>
-               <p className="text-xs font-black text-white/30 uppercase tracking-widest">Your Security, Our Priority.</p>
+               {badge && <p className="text-xs font-black text-accent uppercase tracking-widest">{badge}</p>}
+               {badge2 && <p className="text-xs font-black text-white/30 uppercase tracking-widest">{badge2}</p>}
             </div>
             <div className="flex space-x-5">
-              <SocialIcon icon={<Facebook size={18} />} href="#" />
-              <SocialIcon icon={<Twitter size={18} />} href="#" />
-              <SocialIcon icon={<Linkedin size={18} />} href="https://linkedin.com/in/muzaffarali1493" />
+              {socialLinks.map((social: any, idx: number) => (
+                <SocialIcon key={idx} icon={getSocialIcon(social.platform)} href={social.url} />
+              ))}
             </div>
           </div>
 
           <div>
             <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">Quick Links</h4>
             <ul className="space-y-5 text-sm font-bold text-white/50">
-              <li><FooterLink href="#about">About Us</FooterLink></li>
-              <li><FooterLink href="#services">Services</FooterLink></li>
-              <li><FooterLink href="#industries">Industries</FooterLink></li>
-              <li><FooterLink href="#pricing">Pricing Plans</FooterLink></li>
-              <li><FooterLink href="#faq">FAQs</FooterLink></li>
+              {quickLinks.map((link: any, idx: number) => (
+                <li key={idx}><FooterLink href={link.url}>{link.label}</FooterLink></li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">Contact Details</h4>
             <ul className="space-y-6 text-sm font-bold text-white/50">
-              <li className="flex items-start space-x-4">
-                 <Phone size={20} className="text-accent shrink-0" />
-                 <div className="flex flex-col">
-                    <span>+92 309 8344704</span>
-                    <span>+92 344 2553858</span>
-                 </div>
-              </li>
-              <li className="flex items-start space-x-4">
-                 <Mail size={20} className="text-accent shrink-0" />
-                 <div className="flex flex-col">
-                    <a href="mailto:contact@sw24services.com" className="hover:text-accent">contact@sw24services.com</a>
-                    <a href="mailto:securewatch24services@gmail.com" className="hover:text-accent text-[10px]">securewatch24services@gmail.com</a>
-                 </div>
-              </li>
-              <li className="flex items-start space-x-4">
-                 <Globe size={20} className="text-accent shrink-0" />
-                 <a href="http://www.sw24services.com" className="hover:text-accent">www.sw24services.com</a>
-              </li>
+              {(phone1 || phone2) && (
+                <li className="flex items-start space-x-4">
+                   <Phone size={20} className="text-accent shrink-0" />
+                   <div className="flex flex-col">
+                      {phone1 && <span>{phone1}</span>}
+                      {phone2 && <span>{phone2}</span>}
+                   </div>
+                </li>
+              )}
+              {(email1 || email2) && (
+                <li className="flex items-start space-x-4">
+                   <Mail size={20} className="text-accent shrink-0" />
+                   <div className="flex flex-col">
+                      {email1 && <a href={`mailto:${email1}`} className="hover:text-accent">{email1}</a>}
+                      {email2 && <a href={`mailto:${email2}`} className="hover:text-accent text-[10px]">{email2}</a>}
+                   </div>
+                </li>
+              )}
+              {website && (
+                <li className="flex items-start space-x-4">
+                   <Globe size={20} className="text-accent shrink-0" />
+                   <a href={websiteUrl} className="hover:text-accent">{website}</a>
+                </li>
+              )}
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-black uppercase tracking-[0.2em] text-xs mb-10 decoration-accent decoration-2 underline-offset-8 underline">Headquarters</h4>
             <div className="space-y-6">
-              <div className="flex items-start space-x-4 text-sm text-white/50 group">
-                <MapPin size={20} className="text-accent shrink-0 group-hover:scale-110 transition-transform" />
-                <span className="font-bold">Office No D-35, 2nd Floor,<br />Shahrah-e-Faisal,<br />Karachi, Pakistan</span>
-              </div>
-              <div className="flex items-center space-x-4 text-sm text-white/50 group">
-                <Clock size={20} className="text-accent shrink-0 group-hover:scale-110 transition-transform" />
-                <span className="font-black text-white">24/7 — Monday to Sunday</span>
-              </div>
+              {address && (
+                <div className="flex items-start space-x-4 text-sm text-white/50 group">
+                  <MapPin size={20} className="text-accent shrink-0 group-hover:scale-110 transition-transform" />
+                  <span className="font-bold whitespace-pre-line">{address}</span>
+                </div>
+              )}
+              {hours && (
+                <div className="flex items-center space-x-4 text-sm text-white/50 group">
+                  <Clock size={20} className="text-accent shrink-0 group-hover:scale-110 transition-transform" />
+                  <span className="font-black text-white">{hours}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
           <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-8">
-             <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">© {new Date().getFullYear()} SECURE WATCH. MISSION CRITICAL PROTECTION.</p>
+             <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">{copyright}</p>
              <span className="hidden md:block w-1 h-1 bg-white/10 rounded-full"></span>
-             <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Created by Alpha Crime Control Partnership</p>
+             <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">{credit}</p>
           </div>
           <div className="flex items-center space-x-6">
-             <a href="#" className="text-[10px] font-black text-white/30 hover:text-accent transition-colors uppercase tracking-widest">Status: Online</a>
-             <a href="#" className="text-[10px] font-black text-white/30 hover:text-accent transition-colors uppercase tracking-widest flex items-center">
-                System Log <ExternalLink size={10} className="ml-1" />
-             </a>
+             {statusLabel && (
+               <a href={statusUrl} className="text-[10px] font-black text-white/30 hover:text-accent transition-colors uppercase tracking-widest">{statusLabel}</a>
+             )}
+             {systemLogLabel && (
+               <a href={systemLogUrl} className="text-[10px] font-black text-white/30 hover:text-accent transition-colors uppercase tracking-widest flex items-center">
+                  {systemLogLabel} <ExternalLink size={10} className="ml-1" />
+               </a>
+             )}
           </div>
         </div>
       </div>

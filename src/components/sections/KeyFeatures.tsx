@@ -50,10 +50,17 @@ const KeyFeatures = ({ data }: { data?: any }) => {
     }
   ];
 
+  const getGridCols = (count: number) => {
+    if (count <= 1) return 'grid-cols-1';
+    if (count === 2) return 'grid-cols-1 md:grid-cols-2';
+    if (count === 3) return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
+    return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-4';
+  };
+
   return (
     <section className="py-24 bg-primary-dark/50">
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className={`grid ${getGridCols(featuresList.length)} gap-8`}>
           {featuresList.map((feature: any, index: number) => (
             <motion.div
               key={index}

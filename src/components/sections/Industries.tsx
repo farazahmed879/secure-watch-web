@@ -67,6 +67,12 @@ const Industries = ({ data }: { data?: any }) => {
     { name: 'Construction Sites', description: 'Equipment & perimeter security', icon: 'Construction' }
   ];
 
+  const getGridCols = (count: number) => {
+    if (count <= 1) return 'grid-cols-1';
+    if (count === 2) return 'grid-cols-1 sm:grid-cols-2';
+    return 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+  };
+
   return (
     <section id="industries" className="py-32 bg-primary-dark/80 relative">
       <div className="container relative z-10">
@@ -100,7 +106,7 @@ const Industries = ({ data }: { data?: any }) => {
            </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className={`grid ${getGridCols(industriesList.length)} gap-6`}>
           {industriesList.map((industry: any, index: number) => (
             <motion.div
               key={index}
