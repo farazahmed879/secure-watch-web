@@ -68,7 +68,7 @@ const KeyFeatures = ({ data }: { data?: any }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="glass p-8 rounded-[2.5rem] border-white/5 hover:border-accent/30 transition-all duration-500 group card-hover"
+              className="glass p-8 rounded-2xl border-white/5 hover:border-accent/30 transition-all duration-500 group card-hover"
             >
               <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent group-hover:text-primary-dark transition-all duration-500 group-hover:-rotate-6">
                 {getIcon(feature.icon, index)}

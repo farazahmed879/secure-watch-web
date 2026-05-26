@@ -154,9 +154,9 @@ const Services = ({ data }: { data?: any }) => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group relative"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem] blur-2xl -z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl blur-2xl -z-10"></div>
               
-              <div className="glass p-10 rounded-[2.5rem] border-white/5 group-hover:border-accent/30 transition-all duration-500 h-full flex flex-col items-start card-hover">
+              <div className="glass p-10 rounded-3xl border-white/5 group-hover:border-accent/30 transition-all duration-500 h-full flex flex-col items-start card-hover">
                 <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-8 text-accent group-hover:bg-accent group-hover:text-primary-dark transition-all duration-500 group-hover:-rotate-6">
                   {getServiceIcon(service, index)}
                 </div>

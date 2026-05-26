@@ -203,7 +203,7 @@ const Pricing = ({ data }: { data?: any }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className={`relative p-8 rounded-[3rem] flex flex-col group transition-all duration-500 card-hover ${
+              className={`relative p-8 rounded-3xl flex flex-col group transition-all duration-500 card-hover ${
                 plan.highlight 
                    ? 'bg-gradient-to-br from-accent/10 to-transparent border-2 border-accent shadow-2xl shadow-accent/20' 
                    : 'glass border-white/5 hover:border-white/20'
@@ -241,7 +241,7 @@ const Pricing = ({ data }: { data?: any }) => {
 
               <Link 
                 href="/contact"
-                className={`w-full py-5 rounded-[1.5rem] font-black uppercase text-xs tracking-[0.2em] transition-all duration-300 flex items-center justify-center ${
+                  className={`w-full py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] transition-all duration-300 flex items-center justify-center ${
                 plan.highlight 
                   ? 'bg-accent text-primary-dark hover:bg-white hover:scale-105 shadow-xl shadow-accent/20' 
                   : 'glass border-white/10 hover:bg-white/10 hover:border-white/30'
@@ -256,7 +256,7 @@ const Pricing = ({ data }: { data?: any }) => {
            initial={{ opacity: 0 }}
            whileInView={{ opacity: 1 }}
            viewport={{ once: true }}
-           className="mt-20 glass p-8 rounded-[2rem] border-white/5 max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
+           className="mt-20 glass p-8 rounded-2xl border-white/5 max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6"
         >
            <div className="text-center md:text-left">
               <h5 className="text-white font-bold mb-1">Need a specialized setup?</h5>

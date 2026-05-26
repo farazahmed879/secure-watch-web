@@ -127,7 +127,7 @@ const FAQ = ({ data }: { data?: any }) => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
-                  className={`glass rounded-[2rem] border-white/5 overflow-hidden transition-all duration-500 ${
+                  className={`glass rounded-2xl border-white/5 overflow-hidden transition-all duration-500 ${
                     isOpen 
                       ? 'border-accent/40 bg-white/[0.03] shadow-[0_0_50px_-12px_rgba(254,188,24,0.12)]' 
                       : 'hover:border-white/20'

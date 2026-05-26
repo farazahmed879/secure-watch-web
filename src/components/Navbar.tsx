@@ -60,7 +60,7 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            className="md:hidden absolute top-full left-6 right-6 mt-4 glass rounded-[2.5rem] p-8 flex flex-col space-y-6 shadow-2xl border-accent/20"
+            className="md:hidden absolute top-full left-6 right-6 mt-4 bg-primary-dark rounded-2xl p-8 flex flex-col space-y-6 shadow-2xl border border-white/10"
           >
             <NavLink href="#about" onClick={() => setIsMobileMenuOpen(false)}>About Us</NavLink>
             <NavLink href="#services" onClick={() => setIsMobileMenuOpen(false)}>Services</NavLink>
@@ -69,7 +69,7 @@ const Navbar = () => {
             <NavLink href="#faq" onClick={() => setIsMobileMenuOpen(false)}>FAQ</NavLink>
             <Link 
               href="/contact" 
-              className="px-6 py-4 bg-accent text-primary-dark font-black rounded-full text-center text-lg active:scale-95 transition-transform"
+              className="px-6 py-4 bg-accent text-primary-dark font-black rounded-full text-center text-lg active:scale-95 transition-transform cursor-pointer"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Get Protected

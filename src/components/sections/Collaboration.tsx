@@ -24,7 +24,7 @@ const Collaboration = ({ data }: { data?: any }) => {
   return (
     <section className="py-20 bg-primary-dark relative overflow-hidden">
       <div className="container relative z-10">
-        <div className="glass p-8 md:p-12 rounded-[2rem] border-white/5 relative overflow-hidden mb-12 hover:border-accent/20 transition-all duration-500">
+        <div className="glass p-8 md:p-12 rounded-3xl border-white/5 relative overflow-hidden mb-12 hover:border-accent/20 transition-all duration-500">
           {/* Decorative background for the card */}
           <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-accent/5 to-transparent -z-10"></div>
           
@@ -111,7 +111,7 @@ const Collaboration = ({ data }: { data?: any }) => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="aspect-video glass rounded-[1.5rem] border-accent/20 flex flex-col items-center justify-center p-8 text-center group overflow-hidden hover:border-accent/40 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] transition-all duration-500">
+              <div className="aspect-video glass rounded-2xl border-accent/20 flex flex-col items-center justify-center p-8 text-center group overflow-hidden hover:border-accent/40 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-50"></div>
                 
                 <div className="relative z-10">
@@ -134,7 +134,7 @@ const Collaboration = ({ data }: { data?: any }) => {
              initial={{ opacity: 0, x: -20 }}
              whileInView={{ opacity: 1, x: 0 }}
              viewport={{ once: true }}
-             className="glass p-6 md:p-8 rounded-[1.5rem] border-white/5 flex items-center justify-between group hover:border-accent/30 hover:shadow-[0_0_25px_rgba(34,211,238,0.05)] transition-all duration-500"
+             className="glass p-6 md:p-8 rounded-2xl border-white/5 flex items-center justify-between group hover:border-accent/30 hover:shadow-[0_0_25px_rgba(34,211,238,0.05)] transition-all duration-500"
            >
               <div>
                  <h4 className="text-white/40 text-xs font-black uppercase tracking-widest mb-1.5">Member of</h4>
@@ -150,7 +150,7 @@ const Collaboration = ({ data }: { data?: any }) => {
              initial={{ opacity: 0, x: 20 }}
              whileInView={{ opacity: 1, x: 0 }}
              viewport={{ once: true }}
-             className="glass p-6 md:p-8 rounded-[1.5rem] border-white/5 flex items-center justify-between group hover:border-accent/30 hover:shadow-[0_0_25px_rgba(34,211,238,0.05)] transition-all duration-500"
+             className="glass p-6 md:p-8 rounded-2xl border-white/5 flex items-center justify-between group hover:border-accent/30 hover:shadow-[0_0_25px_rgba(34,211,238,0.05)] transition-all duration-500"
            >
               <div>
                  <h4 className="text-white/40 text-xs font-black uppercase tracking-widest mb-1.5">Registered with</h4>

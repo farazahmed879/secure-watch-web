@@ -114,7 +114,7 @@ const Industries = ({ data }: { data?: any }) => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
-              className="glass p-8 rounded-[2rem] flex items-center space-x-6 group hover:bg-white/5 transition-all duration-500 border-white/5 hover:border-accent/40 cursor-pointer"
+              className="glass p-8 rounded-2xl flex items-center space-x-6 group hover:bg-white/5 transition-all duration-500 border-white/5 hover:border-accent/40 cursor-pointer"
             >
               <div className="w-16 h-16 rounded-2xl bg-primary-light flex items-center justify-center text-white/40 group-hover:text-accent group-hover:scale-110 transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(34,211,238,0.2)]">
                 {getIndustryIcon(industry.icon, index)}

@@ -87,7 +87,7 @@ const AboutUs = ({ data }: { data?: any }) => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="glass-accent p-8 rounded-[2rem] border-accent/20 mb-12"
+              className="glass-accent p-8 rounded-2xl border-accent/20 mb-12"
             >
               <div className="flex items-center space-x-4 mb-4">
                 <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center text-accent">
@@ -103,12 +103,12 @@ const AboutUs = ({ data }: { data?: any }) => {
 
           {/* Why Choose Us Grid */}
           <div className="relative">
-            <div className="absolute inset-0 bg-accent/5 rounded-[3rem] blur-3xl -z-10"></div>
+            <div className="absolute inset-0 bg-accent/5 rounded-3xl blur-3xl -z-10"></div>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              className="glass p-10 md:p-12 rounded-[3rem] border-white/5"
+              className="glass p-10 md:p-12 rounded-3xl border-white/5"
             >
               <h3 className="text-3xl font-black text-white mb-10 tracking-tight">{whyChooseUsTitle}</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

@@ -20,7 +20,7 @@ const CEOSection = ({ data }: { data?: any }) => {
       <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none -z-10" style={{ animationDelay: '2s' }}></div>
 
       <div className="container relative z-10">
-        <div className="relative glass p-8 md:p-16 lg:p-24 rounded-[3.5rem] border border-white/5 overflow-hidden shadow-2xl">
+        <div className="relative glass p-8 md:p-16 lg:p-24 rounded-3xl border border-white/5 overflow-hidden shadow-2xl">
           {/* Subtle gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-tr from-primary-dark/80 via-transparent to-accent/5 pointer-events-none -z-10"></div>
 
@@ -32,10 +32,10 @@ const CEOSection = ({ data }: { data?: any }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="relative w-full max-w-[380px] aspect-[3/4] rounded-[2.5rem] overflow-hidden group shadow-2xl border border-white/10"
+                className="relative w-full max-w-[380px] aspect-[3/4] rounded-2xl overflow-hidden group shadow-2xl border border-white/10"
               >
                 {/* Accent border frame overlay */}
-                <div className="absolute inset-0 border-2 border-accent/20 rounded-[2.5rem] z-20 pointer-events-none transition-colors duration-500 group-hover:border-accent/40"></div>
+                <div className="absolute inset-0 border-2 border-accent/20 rounded-2xl z-20 pointer-events-none transition-colors duration-500 group-hover:border-accent/40"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-primary-dark via-transparent to-transparent opacity-85 group-hover:opacity-70 transition-opacity duration-500 z-10"></div>
 
                 {data?.imageUrl ? (
