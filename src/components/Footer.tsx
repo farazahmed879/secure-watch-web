@@ -105,7 +105,7 @@ const Footer = ({ data }: { data?: any }) => {
                    <Mail size={20} className="text-accent shrink-0" />
                    <div className="flex flex-col">
                       {email1 && <a href={`mailto:${email1}`} className="hover:text-accent">{email1}</a>}
-                      {email2 && <a href={`mailto:${email2}`} className="hover:text-accent text-[10px]">{email2}</a>}
+                      {email2 && <a href={`mailto:${email2}`} className="hover:text-accent">{email2}</a>}
                    </div>
                 </li>
               )}

@@ -60,12 +60,12 @@ export default function AdminLogin() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="glass p-10 rounded-[3rem] border-white/5 shadow-2xl relative"
+          className="glass p-10 rounded-3xl border-white/5 shadow-2xl relative"
         >
           {/* Logo Section */}
           <div className="flex flex-col items-center mb-10">
-            <div className="w-16 h-16 rounded-2xl bg-accent/20 border border-accent/40 flex items-center justify-center text-accent mb-4 shadow-lg shadow-accent/20">
-              <ShieldCheck size={32} className="animate-pulse" />
+            <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-4 shadow-lg overflow-hidden p-2">
+              <img src="/logo.png" alt="Secure Watch Logo" className="w-full h-full object-contain" />
             </div>
             <h1 className="text-3xl font-black text-white tracking-tighter text-center">
               Secure <span className="text-gradient">Watch 24</span>

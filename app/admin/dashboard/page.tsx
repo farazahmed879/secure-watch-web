@@ -8,7 +8,7 @@ import {
   Plus, Trash2, Check, AlertCircle, HelpCircle,
   Activity, ArrowRight, Zap, Target, Camera, Lock,
   FileText, Briefcase, Award, Settings, CheckSquare,
-  Sun, Moon
+  Sun, Moon, ChevronLeft, ChevronRight, Menu, X
 } from 'lucide-react';
 import { apiFetch, getAuthToken, removeAuthToken } from '../../../src/utils/api';
 import { AdminInput, AdminTextarea, SectionFields, SectionHeader, AdminCard, AdminSelect, AdminButton, DeleteButton, ListItemRow, FeatureListRow, AdminImageUpload } from './components';
@@ -109,14 +109,19 @@ const DEFAULT_VALUES: Record<SectionName, any> = {
     ]
   },
   collaboration: {
-    badge: 'PARTNERS IN SECURITY',
-    title: 'Integrated Command',
-    titleAccent: 'Allies',
-    description: 'Our software connects seamlessly with premium physical hardware and telemetry tools.',
-    partners: [
-      { name: 'Axis Communications', role: 'Hardware Partner' },
-      { name: 'Milestone Systems', role: 'VMS Alliance' }
-    ]
+    badge: 'Global Partnership',
+    title: 'International',
+    titleAccent: 'Partnership',
+    description: 'Secure Watch 24 Services is proudly partnered with Alpha Crime Control LLC, a security company based in Houston, Texas, USA.',
+    points: [
+      'International Security Standards',
+      'Improved Monitoring Capabilities',
+      'Faster Response Coordination',
+      'Global-Level Service Quality',
+      'Enhanced Operational Standards'
+    ],
+    usaAddress: '7447 Harwin Drive, Houston, TX, USA',
+    usaPhone: '+1 (281) 702-9418'
   },
   faq: {
     badge: 'COMMON RESOLUTIONS',
@@ -179,6 +184,8 @@ export default function AdminDashboard() {
   const [successMsg, setSuccessMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [darkMode, setDarkMode] = useState(true);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('admin-theme');
@@ -276,18 +283,40 @@ export default function AdminDashboard() {
 
   return (
     <div data-admin-theme={darkMode ? 'dark' : 'light'} className="admin-panel h-screen flex font-sans overflow-hidden transition-colors duration-300" style={{ backgroundColor: 'var(--admin-bg)', color: 'var(--admin-text)' }}>
-      {/* 1. LEFT SIDEBAR */}
-      <aside className="w-60 h-full border-r flex flex-col justify-between shrink-0 px-4 py-5 overflow-y-auto transition-colors duration-300" style={{ backgroundColor: 'var(--admin-sidebar)', borderColor: 'var(--admin-border)' }}>
+      {/* 1. LEFT SIDEBAR (DESKTOP) */}
+      <aside 
+        className={`hidden lg:flex flex-col justify-between shrink-0 py-5 border-r overflow-y-auto transition-all duration-500 ease-in-out ${
+          isSidebarCollapsed ? 'w-20 px-3' : 'w-60 px-4'
+        }`}
+        style={{ backgroundColor: 'var(--admin-sidebar)', borderColor: 'var(--admin-border)' }}
+      >
         <div>
-          {/* Brand */}
-          <div className="flex items-center space-x-2.5 mb-6">
-            <div className="w-8 h-8 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center text-accent">
-              <ShieldCheck size={16} />
+          {/* Brand & Collapse trigger */}
+          <div className={`flex items-center justify-between mb-8 ${isSidebarCollapsed ? 'flex-col space-y-4' : ''}`}>
+            <div className="flex items-center overflow-hidden">
+              <div className="w-8 h-8 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center text-accent shrink-0">
+                <ShieldCheck size={16} />
+              </div>
+              <motion.div
+                animate={{
+                  width: isSidebarCollapsed ? 0 : 'auto',
+                  opacity: isSidebarCollapsed ? 0 : 1,
+                  marginLeft: isSidebarCollapsed ? 0 : 10
+                }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
+                className="overflow-hidden whitespace-nowrap text-left"
+              >
+                <h2 className="font-black text-sm tracking-tight">Secure Watch</h2>
+                <p className="text-[9px] font-black uppercase tracking-wider text-accent">Admin Console</p>
+              </motion.div>
             </div>
-            <div>
-              <h2 className="font-black text-sm tracking-tight">Secure Watch</h2>
-              <p className="text-[9px] font-black uppercase tracking-wider text-accent">Admin Console</p>
-            </div>
+            <button 
+              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+              className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-colors cursor-pointer shrink-0"
+              title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+            >
+              {isSidebarCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+            </button>
           </div>
 
           {/* Navigation Links */}
@@ -303,15 +332,28 @@ export default function AdminDashboard() {
                     setSuccessMsg('');
                     setErrorMsg('');
                   }}
-                  className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 ${
+                  className={`w-full flex items-center rounded-xl font-semibold text-xs transition-all duration-300 ${
+                    isSidebarCollapsed ? 'justify-center p-2.5' : 'px-3 py-2.5'
+                  } ${
                     isActive
                       ? 'bg-accent text-primary-dark shadow-md shadow-accent/15'
                       : 'hover:bg-[var(--admin-nav-hover)]'
                   }`}
                   style={!isActive ? { color: 'var(--admin-nav-text)' } : {}}
+                  title={isSidebarCollapsed ? item.label : undefined}
                 >
-                  <Icon size={15} />
-                  <span>{item.label}</span>
+                  <Icon size={15} className="shrink-0" />
+                  <motion.span
+                    animate={{
+                      width: isSidebarCollapsed ? 0 : 'auto',
+                      opacity: isSidebarCollapsed ? 0 : 1,
+                      marginLeft: isSidebarCollapsed ? 0 : 12
+                    }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="overflow-hidden whitespace-nowrap"
+                  >
+                    {item.label}
+                  </motion.span>
                 </button>
               );
             })}
@@ -320,24 +362,188 @@ export default function AdminDashboard() {
 
         {/* Footer Actions */}
         <div className="space-y-2 pt-4" style={{ borderTop: '1px solid var(--admin-border)' }}>
-          <AdminButton variant="ghost" onClick={toggleTheme} style={{ backgroundColor: 'var(--admin-input)', color: 'var(--admin-text-muted)' }}>
-            {darkMode ? <Sun size={14} /> : <Moon size={14} />}
-            <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
+          <AdminButton 
+            variant="ghost" 
+            onClick={toggleTheme} 
+            className={isSidebarCollapsed ? '!p-2.5 flex justify-center mx-auto !w-full !space-x-0' : ''} 
+            style={{ backgroundColor: 'var(--admin-input)', color: 'var(--admin-text-muted)' }}
+            title={isSidebarCollapsed ? (darkMode ? 'Light Mode' : 'Dark Mode') : undefined}
+          >
+            {darkMode ? <Sun size={14} className="shrink-0" /> : <Moon size={14} className="shrink-0" />}
+            <motion.span
+              animate={{
+                width: isSidebarCollapsed ? 0 : 'auto',
+                opacity: isSidebarCollapsed ? 0 : 1,
+                marginLeft: isSidebarCollapsed ? 0 : 8
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="overflow-hidden whitespace-nowrap"
+            >
+              {darkMode ? 'Light Mode' : 'Dark Mode'}
+            </motion.span>
           </AdminButton>
-          <AdminButton variant="ghost" onClick={() => router.push('/')} style={{ backgroundColor: 'var(--admin-input)', color: 'var(--admin-text-muted)' }}>
-            <Eye size={14} />
-            <span>Public Site</span>
+          <AdminButton 
+            variant="ghost" 
+            onClick={() => router.push('/')} 
+            className={isSidebarCollapsed ? '!p-2.5 flex justify-center mx-auto !w-full !space-x-0' : ''} 
+            style={{ backgroundColor: 'var(--admin-input)', color: 'var(--admin-text-muted)' }}
+            title={isSidebarCollapsed ? 'Public Site' : undefined}
+          >
+            <Eye size={14} className="shrink-0" />
+            <motion.span
+              animate={{
+                width: isSidebarCollapsed ? 0 : 'auto',
+                opacity: isSidebarCollapsed ? 0 : 1,
+                marginLeft: isSidebarCollapsed ? 0 : 8
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="overflow-hidden whitespace-nowrap"
+            >
+              Public Site
+            </motion.span>
           </AdminButton>
-          <AdminButton variant="danger" onClick={handleLogout}>
-            <LogOut size={14} />
-            <span>Sign Out</span>
+          <AdminButton 
+            variant="danger" 
+            onClick={handleLogout}
+            className={isSidebarCollapsed ? '!p-2.5 flex justify-center mx-auto !w-full !space-x-0' : ''}
+            title={isSidebarCollapsed ? 'Sign Out' : undefined}
+          >
+            <LogOut size={14} className="shrink-0" />
+            <motion.span
+              animate={{
+                width: isSidebarCollapsed ? 0 : 'auto',
+                opacity: isSidebarCollapsed ? 0 : 1,
+                marginLeft: isSidebarCollapsed ? 0 : 8
+              }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="overflow-hidden whitespace-nowrap"
+            >
+              Sign Out
+            </motion.span>
           </AdminButton>
         </div>
       </aside>
 
+      {/* Mobile Drawer Overlay */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileOpen(false)}
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+            />
+            
+            {/* Drawer Sidebar */}
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 bottom-0 left-0 z-50 w-60 border-r flex flex-col justify-between px-4 py-5 overflow-y-auto lg:hidden"
+              style={{ backgroundColor: 'var(--admin-bg)', borderColor: 'var(--admin-border)' }}
+            >
+              <div>
+                {/* Brand & Close button */}
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center space-x-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center text-accent">
+                      <ShieldCheck size={16} />
+                    </div>
+                    <div>
+                      <h2 className="font-black text-sm tracking-tight text-white">Secure Watch</h2>
+                      <p className="text-[9px] font-black uppercase tracking-wider text-accent">Admin Console</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setIsMobileOpen(false)}
+                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-colors cursor-pointer"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                {/* Navigation Links */}
+                <nav className="space-y-1">
+                  {SECTION_METADATA.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = activeSection === item.name;
+                    return (
+                      <button
+                        key={item.name}
+                        onClick={() => {
+                          setActiveSection(item.name);
+                          setIsMobileOpen(false);
+                          setSuccessMsg('');
+                          setErrorMsg('');
+                        }}
+                        className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl font-semibold text-xs transition-all duration-300 ${
+                          isActive
+                            ? 'bg-accent text-primary-dark shadow-md shadow-accent/15'
+                            : 'hover:bg-[var(--admin-nav-hover)]'
+                        }`}
+                        style={!isActive ? { color: 'var(--admin-nav-text)' } : {}}
+                      >
+                        <Icon size={15} />
+                        <span>{item.label}</span>
+                      </button>
+                    );
+                  })}
+                </nav>
+              </div>
+
+              {/* Footer Actions */}
+              <div className="space-y-2 pt-4" style={{ borderTop: '1px solid var(--admin-border)' }}>
+                <AdminButton variant="ghost" onClick={toggleTheme} style={{ backgroundColor: 'var(--admin-input)', color: 'var(--admin-text-muted)' }}>
+                  {darkMode ? <Sun size={14} /> : <Moon size={14} />}
+                  <span>{darkMode ? 'Light Mode' : 'Dark Mode'}</span>
+                </AdminButton>
+                <AdminButton variant="ghost" onClick={() => { router.push('/'); setIsMobileOpen(false); }} style={{ backgroundColor: 'var(--admin-input)', color: 'var(--admin-text-muted)' }}>
+                  <Eye size={14} />
+                  <span>Public Site</span>
+                </AdminButton>
+                <AdminButton variant="danger" onClick={handleLogout}>
+                  <LogOut size={14} />
+                  <span>Sign Out</span>
+                </AdminButton>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* 2. MAIN WORKING PANEL */}
-      <main className="flex-grow px-8 py-6 flex flex-col justify-between h-full overflow-y-auto">
+      <main className="flex-grow px-4 md:px-8 py-6 flex flex-col justify-between h-full overflow-y-auto">
         <div>
+          {/* Mobile Navigation Header */}
+          <div className="flex lg:hidden items-center justify-between pb-4 mb-6 border-b" style={{ borderColor: 'var(--admin-border)' }}>
+            <div className="flex items-center space-x-2.5">
+              <button 
+                onClick={() => setIsMobileOpen(true)}
+                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white transition-colors cursor-pointer"
+              >
+                <Menu size={20} />
+              </button>
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 rounded-lg bg-accent/20 border border-accent/30 flex items-center justify-center text-accent">
+                  <ShieldCheck size={16} />
+                </div>
+                <span className="font-bold text-sm tracking-tight text-white">Secure Watch</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <button onClick={toggleTheme} className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white transition-colors cursor-pointer">
+                {darkMode ? <Sun size={14} /> : <Moon size={14} />}
+              </button>
+              <button onClick={handleLogout} className="p-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/10 transition-colors cursor-pointer">
+                <LogOut size={14} />
+              </button>
+            </div>
+          </div>
           {/* Header */}
           <header className="flex justify-between items-center mb-6">
             <div>
@@ -573,6 +779,15 @@ export default function AdminDashboard() {
             {activeSection === 'collaboration' && (
               <div className="space-y-5">
                 <SectionFields section="collaboration" data={currentData} updateField={updateField} descriptionAsTextarea />
+                
+                <div className="bg-white/3 rounded-xl p-4 border border-white/5 space-y-4">
+                  <h4 className="text-sm font-bold uppercase tracking-wider text-accent">USA Partner Contact Details</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <AdminInput label="USA Headquarters Address" value={currentData.usaAddress || ''} variant="deep" onChange={(v) => updateField('collaboration', 'usaAddress', v)} />
+                    <AdminInput label="USA Direct Phone/Hotline" value={currentData.usaPhone || ''} variant="deep" onChange={(v) => updateField('collaboration', 'usaPhone', v)} />
+                  </div>
+                </div>
+
                 <div>
                   <SectionHeader title="Operations Guidelines" count={(currentData.points || []).length} addLabel="Add Point" onAdd={() => updateField('collaboration', 'points', [...(currentData.points || []), ''])} />
                   <div className="space-y-4">
