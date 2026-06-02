@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Plus, Trash2, Camera, RefreshCw } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Trash2, Camera, RefreshCw, AlertTriangle } from 'lucide-react';
 
 /* ─────────────────────────────────────────────
    ADMIN BUTTON
@@ -191,6 +191,61 @@ export const SectionHeader = ({ title, count, unit = 'Items', addLabel, onAdd, s
 );
 
 /* ─────────────────────────────────────────────
+   CONFIRM DIALOG
+   Custom confirmation modal
+   ───────────────────────────────────────────── */
+interface ConfirmDialogProps {
+  isOpen: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+  title?: string;
+  message?: string;
+}
+
+export const ConfirmDialog = ({ isOpen, onConfirm, onCancel, title = 'Confirm Action', message = 'Are you sure you want to proceed?' }: ConfirmDialogProps) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onCancel}
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            className="relative w-full max-w-sm border rounded-2xl p-6 shadow-2xl overflow-hidden"
+            style={{ backgroundColor: 'var(--admin-surface)', borderColor: 'var(--admin-border)' }}
+          >
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center text-red-500 border border-red-500/20">
+                <AlertTriangle size={24} />
+              </div>
+              <div>
+                <h3 className="text-lg font-black tracking-tight mb-1" style={{ color: 'var(--admin-text)' }}>{title}</h3>
+                <p className="text-xs font-semibold" style={{ color: 'var(--admin-text-muted)' }}>{message}</p>
+              </div>
+              <div className="flex w-full space-x-3 pt-2">
+                <AdminButton variant="ghost" onClick={onCancel} className="flex-1 border" style={{ borderColor: 'var(--admin-border)', color: 'var(--admin-text)' }}>
+                  Cancel
+                </AdminButton>
+                <AdminButton variant="danger" onClick={onConfirm} className="flex-1">
+                  Delete
+                </AdminButton>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+/* ─────────────────────────────────────────────
    DELETE BUTTON
    Hover-reveal trash icon
    ───────────────────────────────────────────── */
@@ -202,16 +257,38 @@ interface DeleteButtonProps {
   title?: string;
 }
 
-export const DeleteButton = ({ onClick, groupName, size = 13, title = 'Remove' }: DeleteButtonProps) => (
-  <AdminButton
-    variant="icon"
-    onClick={onClick}
-    className={`opacity-0 group-hover/${groupName}:opacity-100 shrink-0`}
-    title={title}
-  >
-    <Trash2 size={size} />
-  </AdminButton>
-);
+export const DeleteButton = ({ onClick, groupName, size = 13, title = 'Remove' }: DeleteButtonProps) => {
+  const [showConfirm, setShowConfirm] = React.useState(false);
+
+  const handleClick = () => {
+    setShowConfirm(true);
+  };
+
+  const handleConfirm = () => {
+    setShowConfirm(false);
+    onClick();
+  };
+
+  return (
+    <>
+      <AdminButton
+        variant="icon"
+        onClick={handleClick}
+        className={`opacity-100 md:opacity-70 md:group-hover/${groupName}:opacity-100 shrink-0`}
+        title={title}
+      >
+        <Trash2 size={size} />
+      </AdminButton>
+      <ConfirmDialog 
+        isOpen={showConfirm} 
+        onCancel={() => setShowConfirm(false)} 
+        onConfirm={handleConfirm} 
+        title="Delete Item" 
+        message="Are you sure you want to delete this item? This action cannot be undone." 
+      />
+    </>
+  );
+};
 
 /* ─────────────────────────────────────────────
    ADMIN CARD
@@ -313,25 +390,45 @@ interface FeatureListRowProps {
   groupName?: string;
 }
 
-export const FeatureListRow = ({ value, onChange, onDelete, groupName = 'feat' }: FeatureListRowProps) => (
-  <div className={`flex items-center space-x-2 group/${groupName}`}>
-    <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="flex-grow bg-black/10 hover:bg-black/20 border border-white/5 rounded-lg p-2 text-white text-xs focus:outline-none"
-    />
-    <AdminButton
-      variant="icon"
-      onClick={onDelete}
-      className={`opacity-0 group-hover/${groupName}:opacity-100 !p-1`}
-      title="Remove feature"
-    >
-      <Trash2 size={10} />
-    </AdminButton>
-  </div>
-);
+export const FeatureListRow = ({ value, onChange, onDelete, groupName = 'feat' }: FeatureListRowProps) => {
+  const [showConfirm, setShowConfirm] = React.useState(false);
+
+  const handleDeleteClick = () => {
+    setShowConfirm(true);
+  };
+
+  const handleConfirm = () => {
+    setShowConfirm(false);
+    onDelete();
+  };
+
+  return (
+    <div className={`flex items-center space-x-2 group/${groupName}`}>
+      <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="flex-grow bg-black/10 hover:bg-black/20 border border-white/5 rounded-lg p-2 text-white text-xs focus:outline-none"
+      />
+      <AdminButton
+        variant="icon"
+        onClick={handleDeleteClick}
+        className={`opacity-100 md:opacity-70 md:group-hover/${groupName}:opacity-100 !p-1`}
+        title="Remove feature"
+      >
+        <Trash2 size={10} />
+      </AdminButton>
+      <ConfirmDialog 
+        isOpen={showConfirm} 
+        onCancel={() => setShowConfirm(false)} 
+        onConfirm={handleConfirm} 
+        title="Delete Feature" 
+        message="Are you sure you want to delete this feature? This action cannot be undone." 
+      />
+    </div>
+  );
+};
 
 /* ─────────────────────────────────────────────
    ADMIN IMAGE UPLOAD
