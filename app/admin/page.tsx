@@ -100,7 +100,7 @@ export default function AdminLogin() {
                   placeholder="Enter admin username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4.5 pl-12 pr-4 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all font-semibold text-sm"
+                  className="w-full bg-slate-900/80 border border-white/10 rounded-2xl py-4.5 pl-12 pr-4 text-white placeholder-white/20 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/50 focus:bg-slate-900 transition-all font-semibold text-sm shadow-inner"
                   disabled={loading}
                 />
               </div>
@@ -117,7 +117,7 @@ export default function AdminLogin() {
                   placeholder="Enter admin password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl py-4.5 pl-12 pr-12 text-white placeholder-white/20 focus:outline-none focus:border-accent/50 focus:bg-white/10 transition-all font-semibold text-sm"
+                  className="w-full bg-slate-900/80 border border-white/10 rounded-2xl py-4.5 pl-12 pr-12 text-white placeholder-white/20 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/50 focus:bg-slate-900 transition-all font-semibold text-sm shadow-inner"
                   disabled={loading}
                 />
                 <button
